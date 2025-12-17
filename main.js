@@ -21,9 +21,7 @@
         nav: document.getElementById('nav'),
         introText: document.getElementById('intro-text'),
         quoteText: document.getElementById('quote-text'),
-        themenIntro: document.getElementById('themen-intro'),
-        themenGrid: document.getElementById('themen-grid'),
-        themenOutro: document.getElementById('themen-outro'),
+        themenContent: document.getElementById('themen-content'),
         factsContent: document.getElementById('facts-content')
     };
 
@@ -79,134 +77,131 @@
     }
 
     /**
-     * Parse markdown content and extract sections
+     * Parse markdown using marked.js tokens
      * @param {string} markdown - Raw markdown content
      * @returns {Object} Parsed sections
      */
     function parseMarkdownSections(markdown) {
+        // Clean up escaped dots from markdown
+        const cleanedMarkdown = markdown.replace(/\\\./g, '.');
+
+        // Use marked.js lexer to tokenize
+        const tokens = marked.lexer(cleanedMarkdown);
+
         const sections = {
-            intro: '',
+            intro: [],
             quote: '',
-            themenIntro: '',
             themenfelder: [],
-            themenOutro: '',
-            hardFacts: ''
+            hardFacts: []
         };
 
-        // Split into lines for processing
-        const lines = markdown.split('\n');
-        let currentSection = null;
-        let currentThema = null;
-        let buffer = [];
+        let currentSection = 'intro';
 
-        // Find the intro paragraph (after ## heading, before the quote)
-        const introMatch = markdown.match(/\*Was kommt nach der digitalen Edition\?\*\s*\n\n([\s\S]*?)(?=\n\nEine Grundsatzfrage)/);
-        if (introMatch) {
-            sections.intro = introMatch[1].trim();
-        }
+        for (const token of tokens) {
+            // Skip headings (h1, h2)
+            if (token.type === 'heading') {
+                continue;
+            }
 
-        // Extract the central question (quote)
-        const quoteMatch = markdown.match(/Eine Grundsatzfrage durchzieht alle anderen:\s*(.*?\?)/);
-        if (quoteMatch) {
-            sections.quote = quoteMatch[1].trim();
-        }
+            // Detect section changes based on content
+            if (token.type === 'paragraph') {
+                const text = token.text;
 
-        // Extract "Wir laden zu Beiträgen ein" intro
-        const themenIntroMatch = markdown.match(/Wir laden zu Beiträgen ein,[^.]*\./);
-        if (themenIntroMatch) {
-            sections.themenIntro = themenIntroMatch[0];
-        }
+                // Quote: starts with "Eine Grundsatzfrage"
+                if (text.startsWith('Eine Grundsatzfrage')) {
+                    // Extract the question part after the colon
+                    const colonIndex = text.indexOf(':');
+                    if (colonIndex > -1) {
+                        sections.quote = text.substring(colonIndex + 1).trim();
+                    }
+                    continue;
+                }
 
-        // Extract themenfelder (bold headers followed by content)
-        const themenRegex = /\*\*([^.]+)\.\*\*\s*([^*]+?)(?=\*\*|Diese Themenfelder|Wir bitten)/g;
-        let match;
-        let themaIndex = 1;
+                // Themenfelder section starts
+                if (text.startsWith('Wir laden zu Beiträgen ein')) {
+                    currentSection = 'themenfelder';
+                }
 
-        while ((match = themenRegex.exec(markdown)) !== null) {
-            sections.themenfelder.push({
-                number: String(themaIndex).padStart(2, '0'),
-                title: match[1].trim(),
-                content: match[2].trim()
-            });
-            themaIndex++;
-        }
+                // Hard facts section starts
+                if (text.startsWith('Wir bitten um Einreichungen')) {
+                    currentSection = 'hardFacts';
+                }
 
-        // Extract themen outro
-        const outroMatch = markdown.match(/Diese Themenfelder verstehen sich als Orientierung\.[^.]*\./);
-        if (outroMatch) {
-            sections.themenOutro = outroMatch[0];
-        }
+                // End of content
+                if (text.startsWith('Abstracts und Rückfragen')) {
+                    break;
+                }
 
-        // Extract hard facts (submission info)
-        const factsMatch = markdown.match(/Wir bitten um Einreichungen[\s\S]*?(?=Abstracts und Rückfragen)/);
-        if (factsMatch) {
-            sections.hardFacts = factsMatch[0].trim();
+                // Add to current section
+                if (currentSection === 'intro' && !text.startsWith('*Was kommt')) {
+                    sections.intro.push(token);
+                } else if (currentSection === 'themenfelder') {
+                    sections.themenfelder.push(token);
+                } else if (currentSection === 'hardFacts') {
+                    sections.hardFacts.push(token);
+                }
+            }
         }
 
         return sections;
     }
 
     /**
-     * Generate HTML for themenfelder
-     * @param {Array} themenfelder - Array of theme objects
+     * Render tokens back to HTML using marked
+     * @param {Array} tokens - Array of marked tokens
      * @returns {string} HTML string
      */
-    function generateThemenHTML(themenfelder) {
-        return themenfelder.map(thema => `
-            <article class="thema-card">
-                <header class="thema-header">
-                    <span class="thema-number">${thema.number}</span>
-                    <span class="thema-pipe">|</span>
-                    <span class="thema-title">${thema.title}</span>
-                </header>
-                <div class="thema-body">
-                    <p>${thema.content}</p>
-                </div>
-            </article>
-        `).join('');
+    function renderTokens(tokens) {
+        if (!tokens || tokens.length === 0) return '';
+
+        // Create a token list structure that marked.parser expects
+        const tokenList = tokens.slice();
+        tokenList.links = {};
+
+        return marked.parser(tokenList);
     }
 
     /**
      * Generate HTML for hard facts section
-     * @param {string} factsText - Raw facts text
+     * @param {string} factsHtml - HTML from rendered markdown
      * @returns {string} HTML string
      */
-    function generateFactsHTML(factsText) {
-        // Parse the facts into structured data
+    function generateFactsHTML(factsHtml) {
+        // Parse the facts into structured data from HTML
         const facts = [];
 
-        // Extract format
-        const formatMatch = factsText.match(/\*\*Vorträge von ([^*]+)\*\*/);
+        // Extract format (now looks for <strong> tags)
+        const formatMatch = factsHtml.match(/<strong>Vorträge von ([^<]+)<\/strong>/);
         if (formatMatch) {
             facts.push({ label: 'Format', value: `Vorträge, ${formatMatch[1]}` });
         }
 
         // Extract abstract length
-        const abstractMatch = factsText.match(/\*\*Abstracts sollten ([^*]+)\*\*/);
+        const abstractMatch = factsHtml.match(/<strong>Abstracts sollten ([^<]+)<\/strong>/);
         if (abstractMatch) {
             facts.push({ label: 'Abstract', value: abstractMatch[1] });
         }
 
         // Extract deadline
-        const deadlineMatch = factsText.match(/\*\*Einreichungsfrist ist der ([^*]+)\*\*/);
+        const deadlineMatch = factsHtml.match(/<strong>Einreichungsfrist ist der ([^<]+)<\/strong>/);
         if (deadlineMatch) {
             facts.push({ label: 'Deadline', value: deadlineMatch[1] });
         }
 
         // Extract languages
-        const languageMatch = factsText.match(/Konferenzsprachen sind ([^.]+)/);
+        const languageMatch = factsHtml.match(/Konferenzsprachen sind ([^.]+)\./);
         if (languageMatch) {
             facts.push({ label: 'Sprachen', value: languageMatch[1] });
         }
 
         // Extract participants limit
-        const participantsMatch = factsText.match(/auf (\d+) Personen begrenzt/);
+        const participantsMatch = factsHtml.match(/auf (\d+) Personen begrenzt/);
         if (participantsMatch) {
             facts.push({ label: 'Teilnehmer', value: `max. ${participantsMatch[1]} Personen` });
         }
 
         // Extract fee info
-        if (factsText.includes('keine Tagungsgebühr')) {
+        if (factsHtml.includes('keine Tagungsgebühr')) {
             facts.push({ label: 'Gebühr', value: 'keine' });
         }
 
@@ -223,8 +218,8 @@
             `;
         }
 
-        // Fallback: render as paragraphs
-        return `<p>${factsText.replace(/\*\*/g, '')}</p>`;
+        // Fallback: return the HTML as-is
+        return factsHtml;
     }
 
     /**
@@ -232,9 +227,9 @@
      * @param {Object} sections - Parsed sections object
      */
     function injectContent(sections) {
-        // Intro text
-        if (sections.intro) {
-            elements.introText.innerHTML = `<p>${sections.intro}</p>`;
+        // Intro text - render tokens as HTML
+        if (sections.intro.length > 0) {
+            elements.introText.innerHTML = renderTokens(sections.intro);
         }
 
         // Quote
@@ -242,24 +237,15 @@
             elements.quoteText.textContent = sections.quote;
         }
 
-        // Themen intro
-        if (sections.themenIntro) {
-            elements.themenIntro.textContent = sections.themenIntro;
-        }
-
-        // Themenfelder grid
+        // Themenfelder - render tokens as flowing HTML
         if (sections.themenfelder.length > 0) {
-            elements.themenGrid.innerHTML = generateThemenHTML(sections.themenfelder);
+            elements.themenContent.innerHTML = renderTokens(sections.themenfelder);
         }
 
-        // Themen outro
-        if (sections.themenOutro) {
-            elements.themenOutro.textContent = sections.themenOutro;
-        }
-
-        // Hard facts
-        if (sections.hardFacts) {
-            elements.factsContent.innerHTML = generateFactsHTML(sections.hardFacts);
+        // Hard facts - render tokens and extract structured data
+        if (sections.hardFacts.length > 0) {
+            const factsHtml = renderTokens(sections.hardFacts);
+            elements.factsContent.innerHTML = generateFactsHTML(factsHtml);
         }
     }
 
