@@ -19,13 +19,17 @@
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <div class="nav-inner">
-            <a href="#intro" class="nav-link">INTRO</a>
+            <a href="#intro" class="nav-link" data-de="INTRO" data-en="INTRO">INTRO</a>
             <span class="nav-pipe">|</span>
-            <a href="#themenfelder" class="nav-link">THEMENFELDER</a>
+            <a href="#themenfelder" class="nav-link" data-de="THEMENFELDER" data-en="TOPICS">THEMENFELDER</a>
             <span class="nav-pipe">|</span>
-            <a href="#einreichung" class="nav-link">EINREICHUNG</a>
+            <a href="#einreichung" class="nav-link" data-de="EINREICHUNG" data-en="SUBMISSION">EINREICHUNG</a>
             <span class="nav-pipe">|</span>
-            <a href="#kontakt" class="nav-link">KONTAKT</a>
+            <div class="lang-switch" id="lang-switch">
+                <button class="lang-btn active" data-lang="de">DE</button>
+                <span class="lang-pipe">|</span>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
         </div>
     </nav>
 
@@ -38,12 +42,18 @@
         </div>
         <h1 class="hero-title" id="hero-title">Zukunft von Dokumentologie und Editorik im Postdigitalen</h1>
         <p class="hero-meta" id="hero-meta">
-            <span>KONFERENZ DES I<span class="pipe">|</span>D<span class="pipe">|</span>E</span>
+            <span>KONFERENZ DES IDE</span>
             <span class="meta-pipe">|</span>
             <span id="hero-location">WUPPERTAL</span>
             <span class="meta-pipe">|</span>
             <span id="hero-date">02.-04. SEPT 2026</span>
         </p>
+        <span class="hero-badge">CALL FOR PAPERS</span>
+        <a href="#intro" class="scroll-hint" aria-label="Zum Inhalt scrollen">
+            <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </a>
     </header>
 
     <!-- Main Content -->

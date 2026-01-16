@@ -134,12 +134,8 @@ strong {
     z-index: 100;
     background-color: var(--off-white);
     border-bottom: var(--border-thin);
-    transform: translateY(-100%);
-    transition: transform var(--transition-base);
-}
-
-.nav.visible {
     transform: translateY(0);
+    transition: transform var(--transition-base);
 }
 
 .nav-inner {
@@ -167,10 +163,43 @@ strong {
     color: var(--dim-grey);
 }
 
+.lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.lang-btn {
+    background: none;
+    border: none;
+    padding: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--dim-grey);
+    cursor: pointer;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.lang-btn:hover {
+    color: var(--ink-black);
+}
+
+.lang-btn.active {
+    color: var(--ink-black);
+    font-weight: 600;
+}
+
+.lang-pipe {
+    color: var(--dim-grey);
+    font-size: 0.75rem;
+}
+
 /* ========================================
    Hero Section
    ======================================== */
 .hero {
+    position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -196,6 +225,7 @@ strong {
     padding: var(--space-sm) var(--space-md);
     border: var(--border-medium);
     border-radius: var(--border-radius);
+    background-color: var(--paper-white);
     font-family: var(--font-mono);
     font-size: clamp(1rem, 2.5vw, 1.5rem);
     font-weight: 500;
@@ -226,6 +256,56 @@ strong {
 
 .meta-pipe {
     color: var(--dim-grey);
+}
+
+.hero-badge {
+    display: inline-block;
+    margin-top: var(--space-xl);
+    padding: var(--space-xs) var(--space-md);
+    border: var(--border-thin);
+    border-radius: var(--border-radius);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--dim-grey);
+}
+
+.scroll-hint {
+    position: absolute;
+    bottom: var(--space-xl);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--dim-grey);
+    transition: color var(--transition-fast);
+}
+
+.scroll-hint:hover {
+    color: var(--ink-black);
+}
+
+.scroll-arrow {
+    width: 36px;
+    height: 36px;
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translateY(10px);
+        opacity: 0.8;
+    }
+}
+
+.scroll-hint.hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* ========================================

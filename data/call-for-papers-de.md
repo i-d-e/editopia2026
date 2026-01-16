@@ -31,6 +31,6 @@ Diese Themenfelder verstehen sich als Orientierung. Wir begrüßen auch Vorschl�
 Wir bitten um Einreichungen für **Vorträge von 20 Minuten Länge**. **Abstracts sollten 2000 bis 4000 Zeichen inklusive Leerzeichen** umfassen und eine klare Fragestellung, den methodischen Zugang sowie die erwarteten Ergebnisse skizzieren. Bitte fügen Sie eine kurze biographische Notiz bei.
 
 **Einreichungsfrist ist der 15\. März 2026**. Die Benachrichtigung über die Annahme erfolgt bis Ende April 2026\. Eine Publikation ausgewählter Beiträge ist vorgesehen.  
-Die Konferenzsprachen sind Deutsch und Englisch. Die Teilnahme ist auf 60 Personen begrenzt. Es wird keine Tagungsgebühr erhoben.
+Die Konferenzsprachen sind Deutsch und Englisch. Die Teilnahme ist auf 60 Personen begrenzt. Es wird keine Tagungsgebühr erhoben. Reisekosten können leider nicht übernommen werden.
 
 Abstracts und Rückfragen richten Sie bitte an [editopia2026@i-d-e.de](mailto:editopia2026@i-d-e.de).  
