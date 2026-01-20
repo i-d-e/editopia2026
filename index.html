@@ -16,8 +16,11 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Skip to Content Link for Accessibility -->
+    <a href="#intro" class="skip-link" id="skip-link">Zum Inhalt springen</a>
+
     <!-- Navigation -->
-    <nav class="nav" id="nav">
+    <nav class="nav" id="nav" role="navigation" aria-label="Hauptnavigation">
         <div class="nav-inner">
             <a href="#intro" class="nav-link" data-de="INTRO" data-en="INTRO">INTRO</a>
             <span class="nav-pipe">|</span>
@@ -26,9 +29,9 @@
             <a href="#einreichung" class="nav-link" data-de="EINREICHUNG" data-en="SUBMISSION">EINREICHUNG</a>
             <span class="nav-pipe">|</span>
             <div class="lang-switch" id="lang-switch">
-                <button class="lang-btn active" data-lang="de">DE</button>
-                <span class="lang-pipe">|</span>
-                <button class="lang-btn" data-lang="en">EN</button>
+                <button type="button" class="lang-btn active" data-lang="de" aria-label="Deutsch">DE</button>
+                <span class="lang-pipe" aria-hidden="true">|</span>
+                <button type="button" class="lang-btn" data-lang="en" aria-label="English">EN</button>
             </div>
         </div>
     </nav>
@@ -54,7 +57,7 @@
             <span id="hero-date">02.-04. SEPT 2026</span>
         </p>
         <span class="hero-badge">CALL FOR PAPERS</span>
-        <a href="#intro" class="scroll-hint" aria-label="Zum Inhalt scrollen">
+        <a href="#intro" class="scroll-hint" id="scroll-hint" aria-label="Zum Inhalt scrollen">
             <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M6 9l6 6 6-6"/>
             </svg>
@@ -62,7 +65,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="main">
+    <main class="main" role="main">
         <!-- Intro Section -->
         <section class="section section-intro" id="intro">
             <div class="container">
@@ -124,18 +127,19 @@
     </footer>
 
     <!-- Error Modal -->
-    <div class="error-modal" id="error-modal" hidden>
+    <div class="error-modal" id="error-modal" role="alertdialog" aria-modal="true" aria-labelledby="error-title" aria-describedby="error-message" hidden>
         <div class="error-content">
-            <span class="error-icon">!</span>
+            <span class="error-icon" aria-hidden="true">!</span>
+            <h2 id="error-title" class="visually-hidden">Fehler</h2>
             <p class="error-message" id="error-message">Inhalt konnte nicht geladen werden.</p>
-            <button class="btn btn-outline" onclick="location.reload()">Erneut versuchen</button>
+            <button type="button" class="btn btn-outline" onclick="location.reload()">Erneut versuchen</button>
         </div>
     </div>
 
     <!-- Loading Indicator -->
-    <div class="loading" id="loading">
-        <div class="loading-spinner"></div>
-        <p class="loading-text">Laden...</p>
+    <div class="loading" id="loading" role="status" aria-live="polite" aria-label="Seite wird geladen">
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <p class="loading-text" id="loading-text">Laden...</p>
     </div>
 
     <!-- Scripts -->

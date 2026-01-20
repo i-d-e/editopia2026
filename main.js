@@ -22,14 +22,17 @@
     // DOM Elements
     const elements = {
         loading: document.getElementById('loading'),
+        loadingText: document.getElementById('loading-text'),
         errorModal: document.getElementById('error-modal'),
         errorMessage: document.getElementById('error-message'),
+        errorTitle: document.getElementById('error-title'),
         nav: document.getElementById('nav'),
         introText: document.getElementById('intro-text'),
         quoteText: document.getElementById('quote-text'),
         themenContent: document.getElementById('themen-content'),
         factsContent: document.getElementById('facts-content'),
-        scrollHint: document.querySelector('.scroll-hint'),
+        scrollHint: document.getElementById('scroll-hint'),
+        skipLink: document.getElementById('skip-link'),
         langButtons: document.querySelectorAll('.lang-btn')
     };
 
@@ -86,6 +89,61 @@
     }
 
     /**
+     * Initialize navigation scroll behavior
+     * Hides nav on scroll down, shows on scroll up (mobile only)
+     */
+    function initNavScroll() {
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+
+        const updateNav = () => {
+            const currentScrollY = window.scrollY;
+            const nav = elements.nav;
+
+            // Only apply hide/show on mobile (< 768px)
+            const isMobile = window.innerWidth < 768;
+
+            if (isMobile) {
+                // Scrolling down & past threshold - hide nav
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    nav.classList.add('nav-hidden');
+                }
+                // Scrolling up - show nav
+                else if (currentScrollY < lastScrollY) {
+                    nav.classList.remove('nav-hidden');
+                }
+            } else {
+                // Always show nav on desktop
+                nav.classList.remove('nav-hidden');
+            }
+
+            // Add shadow when scrolled
+            if (currentScrollY > 10) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+
+            lastScrollY = currentScrollY;
+            ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateNav);
+                ticking = true;
+            }
+        });
+
+        // Re-evaluate on resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                elements.nav.classList.remove('nav-hidden');
+            }
+        });
+    }
+
+    /**
      * Static UI translations
      */
     const UI_TRANSLATIONS = {
@@ -97,6 +155,13 @@
             sectionFacts: 'Einreichung',
             submitBtn: 'Abstract einreichen',
             quoteLabel: '[ FRAGESTELLUNG ]',
+            // Accessibility labels
+            skipLink: 'Zum Inhalt springen',
+            scrollHint: 'Zum Inhalt scrollen',
+            loadingText: 'Laden...',
+            loadingLabel: 'Seite wird geladen',
+            errorTitle: 'Fehler',
+            errorRetry: 'Erneut versuchen',
             factsLabels: {
                 format: 'Format',
                 abstract: 'Abstract',
@@ -115,6 +180,13 @@
             sectionFacts: 'Submission',
             submitBtn: 'Submit Abstract',
             quoteLabel: '[ KEY QUESTION ]',
+            // Accessibility labels
+            skipLink: 'Skip to content',
+            scrollHint: 'Scroll to content',
+            loadingText: 'Loading...',
+            loadingLabel: 'Page is loading',
+            errorTitle: 'Error',
+            errorRetry: 'Try again',
             factsLabels: {
                 format: 'Format',
                 abstract: 'Abstract',
@@ -148,9 +220,14 @@
     function switchLanguage(lang) {
         currentLang = lang;
 
+        // Update HTML lang attribute for accessibility (screen readers)
+        document.documentElement.lang = lang;
+
         // Update button states
         elements.langButtons.forEach(btn => {
             btn.classList.toggle('active', btn.dataset.lang === lang);
+            // Update aria-pressed for screen readers
+            btn.setAttribute('aria-pressed', btn.dataset.lang === lang);
         });
 
         // Update nav links
@@ -167,6 +244,28 @@
         document.querySelector('.facts-title').textContent = t.sectionFacts;
         document.getElementById('submit-btn').textContent = t.submitBtn;
         document.querySelector('.quote-label').textContent = t.quoteLabel;
+
+        // Update accessibility labels
+        if (elements.skipLink) {
+            elements.skipLink.textContent = t.skipLink;
+        }
+        if (elements.scrollHint) {
+            elements.scrollHint.setAttribute('aria-label', t.scrollHint);
+        }
+        if (elements.loading) {
+            elements.loading.setAttribute('aria-label', t.loadingLabel);
+        }
+        if (elements.loadingText) {
+            elements.loadingText.textContent = t.loadingText;
+        }
+        if (elements.errorTitle) {
+            elements.errorTitle.textContent = t.errorTitle;
+        }
+        // Update retry button
+        const retryBtn = document.querySelector('.error-modal .btn-outline');
+        if (retryBtn) {
+            retryBtn.textContent = t.errorRetry;
+        }
 
         // Reload content from correct markdown file
         loadContent(lang);
@@ -450,6 +549,9 @@
 
         // Initialize navigation
         initNavigation();
+
+        // Initialize navigation scroll behavior (hide on scroll down)
+        initNavScroll();
 
         // Initialize scroll hint (hide on scroll)
         initScrollHint();
