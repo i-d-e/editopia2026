@@ -483,9 +483,15 @@ strong {
     max-width: var(--content-max);
     margin: 0 auto;
     font-size: 1.125rem;
-    line-height: 1.8;
-    text-align: justify;
-    hyphens: auto;
+    line-height: 1.75;
+}
+
+.intro-text p {
+    margin-bottom: var(--space-md);
+}
+
+.intro-text p:last-child {
+    margin-bottom: 0;
 }
 
 /* ========================================
@@ -550,9 +556,7 @@ strong {
     max-width: var(--content-max);
     margin: 0 auto;
     font-size: 1.125rem;
-    line-height: 1.8;
-    text-align: justify;
-    hyphens: auto;
+    line-height: 1.75;
 }
 
 .themen-content p {
@@ -866,11 +870,16 @@ strong {
         padding: 0 var(--space-md);
     }
 
-    /* Remove justify on mobile - causes uneven spacing */
+    /* Adjust text for better mobile readability */
     .intro-text,
     .themen-content {
-        text-align: left;
-        hyphens: none;
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .intro-text p,
+    .themen-content p {
+        margin-bottom: var(--space-sm);
     }
 
     /* Better button sizing for touch */
@@ -956,6 +965,13 @@ strong {
         padding: var(--space-xl) 0;
     }
 
+    /* Smaller text on small mobile */
+    .intro-text,
+    .themen-content {
+        font-size: 0.9375rem;
+        line-height: 1.65;
+    }
+
     .footer {
         padding: var(--space-xl) 0;
     }
@@ -988,8 +1004,14 @@ strong {
         font-size: 0.5625rem;
     }
 
+    .intro-text,
+    .themen-content {
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+
     .quote-text {
-        font-size: 1rem;
+        font-size: 0.9375rem;
     }
 
     .facts-list {
