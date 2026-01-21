@@ -8,7 +8,7 @@ Digitale Editionen sind wissenschaftlicher Alltag geworden. Die erschließende W
 
 Eine Grundsatzfrage durchzieht alle anderen: Wenn Daten fluid, vernetzt und prozessual werden, was hält die Edition als Form zusammen? Lebt das Konzept weiter oder löst es sich auf?
 
-Das Institut für Dokumentologie und Editorik (IDE) lädt ein, diesen Fragen gemeinsam nachzugehen. Unter postdigital verstehen wir dabei eine Konstellation, in der digitale Werkzeuge und Denkweisen nicht mehr als Gegensatz zum Analogen begriffen werden, sondern als integraler Bestandteil geisteswissenschaftlicher Arbeit.
+Das Institut für Dokumentologie und Editorik (IDE) lädt ein, diesen Fragen auf der internationalen Konferenz **Editopia 2046** gemeinsam nachzugehen. Unter postdigital verstehen wir dabei eine Konstellation, in der digitale Werkzeuge und Denkweisen nicht mehr als Gegensatz zum Analogen begriffen werden, sondern als integraler Bestandteil geisteswissenschaftlicher Arbeit.
 
 Wir laden zu Beiträgen ein, die sich mit folgenden Themenfeldern auseinandersetzen.
 

@@ -8,7 +8,7 @@ Digital editions have become part of everyday scholarly practice. The scholarly 
 
 A fundamental question runs through all others: When data become fluid, networked, and processual, what holds the edition together as a form? Does the concept live on, or does it dissolve?
 
-The Institute for Documentology and Scholarly Editing (IDE) invites you to explore these questions together. By postdigital, we mean a constellation in which digital tools and ways of thinking are no longer understood as the opposite of the analog, but as an integral part of humanities scholarship.
+The Institute for Documentology and Scholarly Editing (IDE) invites you to explore these questions together at the international conference **Editopia 2046**. By postdigital, we mean a constellation in which digital tools and ways of thinking are no longer understood as the opposite of the analog, but as an integral part of humanities scholarship.
 
 We invite contributions that engage with the following topics.
 

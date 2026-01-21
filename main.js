@@ -173,7 +173,7 @@
             }
         },
         en: {
-            heroTitle: 'The Future of Documentary Studies and Editing in the Postdigital',
+            heroTitle: 'The Future of Documentary Studies and Editing in the Postdigital Era',
             heroMeta: 'CONFERENCE OF THE IDE',
             heroBadge: 'CALL FOR PAPERS',
             sectionThemen: 'Topics',
