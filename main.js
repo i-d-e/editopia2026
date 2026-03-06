@@ -37,7 +37,11 @@
         factsContent: document.getElementById('facts-content'),
         scrollHint: document.getElementById('scroll-hint'),
         skipLink: document.getElementById('skip-link'),
-        langButtons: document.querySelectorAll('.lang-btn')
+        langButtons: document.querySelectorAll('.lang-btn'),
+        impressumBtn: document.getElementById('impressum-btn'),
+        impressumModal: document.getElementById('impressum-modal'),
+        impressumClose: document.getElementById('impressum-close'),
+        impressumBackdrop: document.getElementById('impressum-backdrop')
     };
 
     /**
@@ -232,6 +236,9 @@
         if (retryBtn) {
             retryBtn.textContent = t.errorRetry;
         }
+        if (elements.impressumBtn) {
+            elements.impressumBtn.textContent = elements.impressumBtn.dataset[lang];
+        }
 
         loadContent(lang);
     }
@@ -407,6 +414,33 @@
         }
     }
 
+    // ─── Impressum Modal ────────────────────────────────────────────
+
+    function initImpressum() {
+        const { impressumBtn, impressumModal, impressumClose, impressumBackdrop } = elements;
+        if (!impressumBtn || !impressumModal) return;
+
+        const openModal = () => {
+            impressumModal.hidden = false;
+            document.body.style.overflow = 'hidden';
+            impressumClose.focus();
+        };
+
+        const closeModal = () => {
+            impressumModal.hidden = true;
+            document.body.style.overflow = '';
+            impressumBtn.focus();
+        };
+
+        impressumBtn.addEventListener('click', openModal);
+        impressumClose.addEventListener('click', closeModal);
+        impressumBackdrop.addEventListener('click', closeModal);
+
+        impressumModal.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    }
+
     // ─── Initialization ──────────────────────────────────────────────
 
     function init() {
@@ -421,6 +455,7 @@
         initNavScroll();
         initScrollHint();
         initLanguageSwitcher();
+        initImpressum();
 
         // Retry button (replaces inline onclick)
         const retryBtn = document.getElementById('retry-btn');

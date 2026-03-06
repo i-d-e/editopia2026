@@ -7,6 +7,30 @@
     <meta name="keywords" content="Digitale Edition, Dokumentologie, Editorik, Postdigital, IDE, Konferenz, Wuppertal, Editopia">
     <title>Editopia | Zukunft von Dokumentologie und Editorik</title>
 
+    <!-- SEO -->
+    <link rel="canonical" href="https://editopia2026.i-d-e.de/">
+    <meta name="author" content="Institut für Dokumentologie und Editorik">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="assets/img/ide-logo.jpeg">
+    <link rel="apple-touch-icon" href="assets/img/ide-logo.jpeg">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Editopia | Konferenz zur Zukunft von Dokumentologie und Editorik">
+    <meta property="og:description" content="Internationale Konferenz des IDE zur Zukunft von Dokumentologie und Editorik im Postdigitalen. Wuppertal, 2.-4. September 2026.">
+    <meta property="og:url" content="https://editopia2026.i-d-e.de/">
+    <meta property="og:image" content="https://editopia2026.i-d-e.de/assets/img/ide-logo.jpeg">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Editopia | Konferenz zur Zukunft von Dokumentologie und Editorik">
+    <meta name="twitter:description" content="Internationale Konferenz des IDE. Wuppertal, 2.-4. September 2026. Call for Papers bis 22. März 2026.">
+    <meta name="twitter:image" content="https://editopia2026.i-d-e.de/assets/img/ide-logo.jpeg">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,6 +38,42 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Editopia",
+        "description": "Internationale Konferenz zur Zukunft von Dokumentologie und Editorik im Postdigitalen",
+        "startDate": "2026-09-02",
+        "endDate": "2026-09-04",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+            "@type": "Place",
+            "name": "Bergische Universität Wuppertal",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Wuppertal",
+                "addressCountry": "DE"
+            }
+        },
+        "organizer": {
+            "@type": "Organization",
+            "name": "Institut für Dokumentologie und Editorik",
+            "url": "https://www.i-d-e.de/"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/LimitedAvailability"
+        },
+        "inLanguage": ["de", "en"],
+        "maximumAttendeeCapacity": 60
+    }
+    </script>
 </head>
 <body>
     <!-- Skip to Content Link for Accessibility -->
@@ -29,9 +89,9 @@
             <a href="#einreichung" class="nav-link" data-de="EINREICHUNG" data-en="SUBMISSION">EINREICHUNG</a>
             <span class="nav-pipe">|</span>
             <div class="lang-switch" id="lang-switch">
-                <button type="button" class="lang-btn active" data-lang="de" aria-label="Deutsch">DE</button>
+                <button type="button" class="lang-btn active" data-lang="de" aria-label="Deutsch" aria-pressed="true">DE</button>
                 <span class="lang-pipe" aria-hidden="true">|</span>
-                <button type="button" class="lang-btn" data-lang="en" aria-label="English">EN</button>
+                <button type="button" class="lang-btn" data-lang="en" aria-label="English" aria-pressed="false">EN</button>
             </div>
         </div>
     </nav>
@@ -130,8 +190,55 @@
                     <img src="https://licensebuttons.net/l/by-sa/4.0/88x31.png" alt="CC BY-SA 4.0" class="cc-badge">
                 </a>
             </div>
+            <p class="footer-legal">
+                <button type="button" class="legal-link" id="impressum-btn" data-de="Impressum & Datenschutz" data-en="Legal Notice & Privacy">Impressum & Datenschutz</button>
+            </p>
         </div>
     </footer>
+
+    <!-- Impressum Modal -->
+    <div class="impressum-modal" id="impressum-modal" role="dialog" aria-modal="true" aria-labelledby="impressum-title" hidden>
+        <div class="impressum-backdrop" id="impressum-backdrop"></div>
+        <div class="impressum-content">
+            <div class="impressum-header">
+                <h2 id="impressum-title">Impressum & Datenschutz</h2>
+                <button type="button" class="impressum-close" id="impressum-close" aria-label="Schließen">&times;</button>
+            </div>
+            <div class="impressum-body">
+                <h3>Impressum</h3>
+                <p><strong>Angaben gemäß § 5 DDG:</strong><br>
+                Institut für Dokumentologie und Editorik e. V.<br>
+                c/o TELOTA<br>
+                Berlin-Brandenburgische Akademie der Wissenschaften<br>
+                Jägerstrasse 22/23<br>
+                10117 Berlin</p>
+
+                <p><strong>Vertreten durch:</strong><br>
+                Alexander Czmiel (1. Vorsitzender)<br>
+                Christiane Fritze (2. Vorsitzende)<br>
+                Oliver Patrick Bilbo Duntze (Schatzmeister)</p>
+
+                <p><strong>Kontakt:</strong> info (at) i-d-e (dot) de<br>
+                <strong>Registergericht:</strong> Amtsgericht Berlin-Charlottenburg, VR31126B</p>
+
+                <h3>Datenschutz</h3>
+
+                <p>Verantwortlich für die Datenverarbeitung ist der oben genannte Verein.</p>
+
+                <h4>Hosting</h4>
+                <p>Diese Website wird über GitHub Pages bereitgestellt (GitHub Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA). Beim Zugriff werden automatisch Server-Logdaten erhoben (IP-Adresse, Zeitpunkt, aufgerufene Seite). Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Weitere Informationen: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>.</p>
+
+                <h4>Google Fonts</h4>
+                <p>Wir binden Schriftarten von Google LLC (1600 Amphitheatre Parkway, Mountain View, CA 94043, USA) ein. Beim Seitenaufruf wird eine Verbindung zu Google-Servern hergestellt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. <a href="https://www.google.com/policies/privacy/" target="_blank" rel="noopener">Datenschutzerklärung</a>.</p>
+
+                <h4>Ihre Rechte</h4>
+                <p>Sie haben gemäß DSGVO das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) und Widerspruch (Art. 21). Wenden Sie sich dazu an info@i-d-e.de. Sie können sich zudem bei einer Datenschutz-Aufsichtsbehörde beschweren (Art. 77).</p>
+
+                <h4>Cookies</h4>
+                <p>Diese Website verwendet keine Cookies. Es findet kein Tracking statt.</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Error Modal -->
     <div class="error-modal" id="error-modal" role="alertdialog" aria-modal="true" aria-labelledby="error-title" aria-describedby="error-message" hidden>

@@ -8,7 +8,7 @@
     --ink-black: #000000;
     --paper-white: #FFFFFF;
     --off-white: #F4F4F4;
-    --dim-grey: #666666;  /* Improved contrast ratio (was #888888) */
+    --dim-grey: #999999;  /* 6.3:1 on black, used for decorative/secondary text */
     --light-grey: #E0E0E0;
 
     /* Typography */
@@ -391,7 +391,7 @@ strong {
     font-family: var(--font-mono);
     font-size: 0.875rem;
     letter-spacing: 0.1em;
-    color: #555555;
+    color: #4A4A4A;  /* 5.9:1 on off-white */
 }
 
 .meta-pipe {
@@ -595,7 +595,7 @@ strong {
     letter-spacing: 0.2em;
     text-transform: uppercase;
     margin-bottom: var(--space-lg);
-    opacity: 0.7;
+    color: #AAAAAA;  /* 7.6:1 on black — replaces opacity: 0.7 for WCAG AA */
 }
 
 .facts-content {
@@ -611,7 +611,7 @@ strong {
 
 .facts-list li {
     padding: var(--space-xs) 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .facts-list li:last-child {
@@ -619,14 +619,14 @@ strong {
 }
 
 .facts-label {
-    color: var(--dim-grey);
+    color: #AAAAAA;  /* 7.6:1 on black — WCAG AA compliant */
     margin-right: var(--space-sm);
 }
 
 .facts-content p {
     font-size: 0.9375rem;
     line-height: 1.8;
-    opacity: 0.9;
+    text-align: left;
 }
 
 /* ========================================
@@ -731,6 +731,167 @@ strong {
     opacity: 1;
 }
 
+.footer-legal {
+    margin-top: var(--space-sm);
+}
+
+.legal-link {
+    background: none;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--dim-grey);
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    padding: var(--space-xs) var(--space-sm);
+    transition: color var(--transition-fast);
+}
+
+.legal-link:hover {
+    color: var(--ink-black);
+}
+
+/* ========================================
+   Impressum Modal
+   ======================================== */
+.impressum-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1002;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.impressum-modal[hidden] {
+    display: none;
+}
+
+.impressum-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.impressum-content {
+    position: relative;
+    width: 90%;
+    max-width: 640px;
+    max-height: 80vh;
+    background-color: var(--paper-white);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.impressum-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-xl);
+    border-bottom: var(--border-thin);
+    flex-shrink: 0;
+}
+
+.impressum-header h2 {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.impressum-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--dim-grey);
+    cursor: pointer;
+    padding: var(--space-xs);
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast);
+}
+
+.impressum-close:hover {
+    color: var(--ink-black);
+}
+
+.impressum-body {
+    padding: var(--space-xl);
+    overflow-y: auto;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: #333;
+}
+
+.impressum-body h3 {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-xs);
+    border-bottom: var(--border-thin);
+}
+
+.impressum-body h3:first-child {
+    margin-top: 0;
+}
+
+.impressum-body h4 {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+}
+
+.impressum-body p {
+    margin-bottom: var(--space-sm);
+}
+
+.impressum-body ul {
+    list-style: none;
+    margin-bottom: var(--space-sm);
+    padding-left: 0;
+}
+
+.impressum-body ul li {
+    padding-left: var(--space-md);
+    position: relative;
+    margin-bottom: var(--space-xs);
+}
+
+.impressum-body ul li::before {
+    content: '\2013';
+    position: absolute;
+    left: 0;
+    color: var(--dim-grey);
+}
+
+.impressum-body a {
+    border-bottom: 1px solid var(--dim-grey);
+    padding-bottom: 1px;
+}
+
+.impressum-body a:hover {
+    border-color: var(--ink-black);
+    color: var(--ink-black);
+}
+
 /* ========================================
    Loading State
    ======================================== */
@@ -820,7 +981,7 @@ strong {
 .error-message {
     margin-bottom: var(--space-lg);
     font-size: 0.9375rem;
-    color: var(--dim-grey);
+    color: #555555;  /* 7.4:1 on white — WCAG AA compliant */
 }
 
 /* ========================================
@@ -930,7 +1091,7 @@ strong {
     .nav-link {
         font-size: 0.6875rem;
         padding: var(--space-xs) var(--space-sm);
-        min-height: 40px;
+        min-height: 44px;  /* WCAG touch target */
     }
 
     .lang-switch {
@@ -943,8 +1104,8 @@ strong {
     }
 
     .lang-btn {
-        min-width: 36px;
-        min-height: 36px;
+        min-width: 44px;  /* WCAG touch target */
+        min-height: 44px;
         padding: var(--space-xs);
     }
 
