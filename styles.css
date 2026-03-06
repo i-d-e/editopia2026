@@ -1073,6 +1073,26 @@ strong {
         padding: var(--space-md) var(--space-lg);
         min-height: 48px;
     }
+
+    /* Impressum modal mobile */
+    .impressum-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .impressum-header {
+        padding: var(--space-sm) var(--space-md);
+    }
+
+    .impressum-body {
+        padding: var(--space-md);
+    }
+
+    .legal-link {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
 }
 
 /* Mobile (480px) */
@@ -1159,6 +1179,14 @@ strong {
 
     .footer {
         padding: var(--space-xl) 0;
+    }
+
+    .impressum-body {
+        font-size: 0.75rem;
+    }
+
+    .impressum-body h3 {
+        font-size: 0.6875rem;
     }
 }
 
@@ -1260,6 +1288,7 @@ strong {
     .nav,
     .loading,
     .error-modal,
+    .impressum-modal,
     .hero-ambient {
         display: none !important;
     }
