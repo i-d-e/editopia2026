@@ -1,6 +1,7 @@
 /**
- * Editopia 2046 - Main JavaScript
- * Loads and parses content from call-for-papers.md
+ * Editopia 2026 - Main JavaScript
+ * Loads and parses content from call-for-papers markdown files.
+ * Sections are identified by ## headings, not by content matching.
  */
 
 (function () {
@@ -18,6 +19,9 @@
 
     // Current language
     let currentLang = 'de';
+
+    // Cache for parsed markdown sections (avoids refetching on language switch)
+    const contentCache = {};
 
     // DOM Elements
     const elements = {
@@ -38,7 +42,6 @@
 
     /**
      * Show error modal with message
-     * @param {string} message - Error message to display
      */
     function showError(message) {
         elements.errorMessage.textContent = message;
@@ -60,7 +63,6 @@
      * Initialize navigation smooth scroll
      */
     function initNavigation() {
-        // Smooth scroll for navigation links
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -99,25 +101,18 @@
         const updateNav = () => {
             const currentScrollY = window.scrollY;
             const nav = elements.nav;
-
-            // Only apply hide/show on mobile (< 768px)
             const isMobile = window.innerWidth < 768;
 
             if (isMobile) {
-                // Scrolling down & past threshold - hide nav
                 if (currentScrollY > lastScrollY && currentScrollY > 100) {
                     nav.classList.add('nav-hidden');
-                }
-                // Scrolling up - show nav
-                else if (currentScrollY < lastScrollY) {
+                } else if (currentScrollY < lastScrollY) {
                     nav.classList.remove('nav-hidden');
                 }
             } else {
-                // Always show nav on desktop
                 nav.classList.remove('nav-hidden');
             }
 
-            // Add shadow when scrolled
             if (currentScrollY > 10) {
                 nav.classList.add('nav-scrolled');
             } else {
@@ -135,7 +130,6 @@
             }
         });
 
-        // Re-evaluate on resize
         window.addEventListener('resize', () => {
             if (window.innerWidth >= 768) {
                 elements.nav.classList.remove('nav-hidden');
@@ -144,58 +138,38 @@
     }
 
     /**
-     * Static UI translations
+     * Static UI translations (labels not derived from markdown)
      */
     const UI_TRANSLATIONS = {
         de: {
-            heroTitle: 'Zukunft von Dokumentologie und Editorik im Postdigitalen',
+            heroTitle: 'Zur Zukunft von Dokumentologie und Editorik im Postdigitalen',
             heroMeta: 'KONFERENZ DES IDE',
             heroBadge: 'CALL FOR PAPERS',
             sectionThemen: 'Themenfelder',
             sectionFacts: 'Einreichung',
             submitBtn: 'Abstract einreichen',
             quoteLabel: '[ FRAGESTELLUNG ]',
-            // Accessibility labels
             skipLink: 'Zum Inhalt springen',
             scrollHint: 'Zum Inhalt scrollen',
             loadingText: 'Laden...',
             loadingLabel: 'Seite wird geladen',
             errorTitle: 'Fehler',
-            errorRetry: 'Erneut versuchen',
-            factsLabels: {
-                format: 'Format',
-                abstract: 'Abstract',
-                deadline: 'Deadline',
-                languages: 'Sprachen',
-                participants: 'Teilnehmer',
-                fee: 'Gebühr',
-                travel: 'Reisekosten'
-            }
+            errorRetry: 'Erneut versuchen'
         },
         en: {
-            heroTitle: 'The Future of Documentary Studies and Editing in the Postdigital Era',
+            heroTitle: 'On the Future of Documentology and Scholarly Editing in the Post-Digital Age',
             heroMeta: 'CONFERENCE OF THE IDE',
             heroBadge: 'CALL FOR PAPERS',
             sectionThemen: 'Topics',
             sectionFacts: 'Submission',
             submitBtn: 'Submit Abstract',
             quoteLabel: '[ KEY QUESTION ]',
-            // Accessibility labels
             skipLink: 'Skip to content',
             scrollHint: 'Scroll to content',
             loadingText: 'Loading...',
             loadingLabel: 'Page is loading',
             errorTitle: 'Error',
-            errorRetry: 'Try again',
-            factsLabels: {
-                format: 'Format',
-                abstract: 'Abstract',
-                deadline: 'Deadline',
-                languages: 'Languages',
-                participants: 'Participants',
-                fee: 'Fee',
-                travel: 'Travel costs'
-            }
+            errorRetry: 'Try again'
         }
     };
 
@@ -215,27 +189,21 @@
 
     /**
      * Switch language
-     * @param {string} lang - Language code ('de' or 'en')
      */
     function switchLanguage(lang) {
         currentLang = lang;
 
-        // Update HTML lang attribute for accessibility (screen readers)
         document.documentElement.lang = lang;
 
-        // Update button states
         elements.langButtons.forEach(btn => {
             btn.classList.toggle('active', btn.dataset.lang === lang);
-            // Update aria-pressed for screen readers
             btn.setAttribute('aria-pressed', btn.dataset.lang === lang);
         });
 
-        // Update nav links
         document.querySelectorAll('.nav-link').forEach(link => {
             link.textContent = link.dataset[lang];
         });
 
-        // Update static UI elements
         const t = UI_TRANSLATIONS[lang];
         document.getElementById('hero-title').textContent = t.heroTitle;
         document.querySelector('.hero-meta span:first-child').textContent = t.heroMeta;
@@ -245,7 +213,6 @@
         document.getElementById('submit-btn').textContent = t.submitBtn;
         document.querySelector('.quote-label').textContent = t.quoteLabel;
 
-        // Update accessibility labels
         if (elements.skipLink) {
             elements.skipLink.textContent = t.skipLink;
         }
@@ -261,110 +228,100 @@
         if (elements.errorTitle) {
             elements.errorTitle.textContent = t.errorTitle;
         }
-        // Update retry button
-        const retryBtn = document.querySelector('.error-modal .btn-outline');
+        const retryBtn = document.getElementById('retry-btn');
         if (retryBtn) {
             retryBtn.textContent = t.errorRetry;
         }
 
-        // Reload content from correct markdown file
         loadContent(lang);
     }
 
+    // ─── Markdown Parsing ────────────────────────────────────────────
+
     /**
-     * Parse markdown using marked.js tokens
-     * @param {string} markdown - Raw markdown content
-     * @param {string} lang - Language code
-     * @returns {Object} Parsed sections
+     * Parse markdown into sections based on ## headings.
+     * Section names are derived from heading text (lowercased).
+     * No language-specific logic required.
      */
-    function parseMarkdownSections(markdown, lang = 'de') {
-        // Clean up escaped dots from markdown
-        const cleanedMarkdown = markdown.replace(/\\\./g, '.');
+    function parseMarkdown(markdown) {
+        const cleaned = markdown.replace(/\\\./g, '.');
+        const tokens = marked.lexer(cleaned);
 
-        // Use marked.js lexer to tokenize
-        const tokens = marked.lexer(cleanedMarkdown);
-
-        const sections = {
-            intro: [],
-            quote: '',
-            themenfelder: [],
-            hardFacts: []
-        };
-
-        let currentSection = 'intro';
-
-        // Language-specific patterns
-        const patterns = lang === 'de' ? {
-            quote: 'Eine Grundsatzfrage',
-            themen: 'Wir laden zu Beiträgen ein',
-            facts: 'Wir bitten um Einreichungen',
-            end: 'Abstracts und Rückfragen',
-            skip: '*Was kommt'
-        } : {
-            quote: 'A fundamental question',
-            themen: 'We invite contributions',
-            facts: 'We invite submissions',
-            end: 'Please send abstracts',
-            skip: '*What comes after'
-        };
+        const sections = {};
+        let currentSection = null;
+        let currentTokens = [];
 
         for (const token of tokens) {
-            // Skip headings (h1, h2)
-            if (token.type === 'heading') {
+            if (token.type === 'heading' && token.depth === 2) {
+                // Save previous section
+                if (currentSection !== null) {
+                    sections[currentSection] = currentTokens;
+                }
+                currentSection = token.text.trim().toLowerCase();
+                currentTokens = [];
+            } else if (token.type === 'heading' && token.depth === 1) {
                 continue;
+            } else if (currentSection !== null) {
+                currentTokens.push(token);
             }
+        }
 
-            // Detect section changes based on content
-            if (token.type === 'paragraph') {
-                const text = token.text;
-
-                // Quote
-                if (text.startsWith(patterns.quote)) {
-                    const colonIndex = text.indexOf(':');
-                    if (colonIndex > -1) {
-                        sections.quote = text.substring(colonIndex + 1).trim();
-                    }
-                    continue;
-                }
-
-                // Themenfelder section starts
-                if (text.startsWith(patterns.themen)) {
-                    currentSection = 'themenfelder';
-                }
-
-                // Hard facts section starts
-                if (text.startsWith(patterns.facts)) {
-                    currentSection = 'hardFacts';
-                }
-
-                // End of content
-                if (text.startsWith(patterns.end)) {
-                    break;
-                }
-
-                // Add to current section
-                if (currentSection === 'intro' && !text.startsWith(patterns.skip)) {
-                    sections.intro.push(token);
-                } else if (currentSection === 'themenfelder') {
-                    sections.themenfelder.push(token);
-                } else if (currentSection === 'hardFacts') {
-                    sections.hardFacts.push(token);
-                }
-            }
+        // Save last section
+        if (currentSection !== null) {
+            sections[currentSection] = currentTokens;
         }
 
         return sections;
     }
 
     /**
-     * Render tokens back to HTML using marked
-     * @param {Array} tokens - Array of marked tokens
-     * @returns {string} HTML string
+     * Parse key-value facts from tokens.
+     * Expects lines in "Label: Value" format.
+     */
+    function parseFacts(tokens) {
+        const facts = [];
+
+        for (const token of tokens) {
+            if (token.type !== 'paragraph') continue;
+
+            const lines = token.text.split('\n');
+            for (const line of lines) {
+                const trimmed = line.trim();
+                const colonIndex = trimmed.indexOf(': ');
+                if (colonIndex > -1) {
+                    facts.push({
+                        label: trimmed.substring(0, colonIndex).trim(),
+                        value: trimmed.substring(colonIndex + 2).trim()
+                    });
+                }
+            }
+        }
+
+        return facts;
+    }
+
+    /**
+     * Generate HTML for the facts list.
+     */
+    function renderFacts(facts) {
+        if (!facts || facts.length === 0) return '';
+
+        const items = facts.map(fact =>
+            `<li>
+                <span class="facts-label">${fact.label}:</span>
+                <span class="facts-value">${fact.value}</span>
+            </li>`
+        );
+
+        return `<ul class="facts-list">${items.join('')}</ul>`;
+    }
+
+    /**
+     * Render tokens back to HTML using marked.
      */
     function renderTokens(tokens) {
         if (!tokens || tokens.length === 0) return '';
 
-        // Create a token list structure that marked.parser expects
         const tokenList = tokens.slice();
         tokenList.links = {};
 
@@ -372,138 +329,49 @@
     }
 
     /**
-     * Generate HTML for hard facts section
-     * @param {string} factsHtml - HTML from rendered markdown
-     * @param {string} lang - Current language
-     * @returns {string} HTML string
+     * Inject parsed content into DOM.
      */
-    function generateFactsHTML(factsHtml, lang) {
-        const labels = UI_TRANSLATIONS[lang].factsLabels;
-        const facts = [];
-
-        if (lang === 'de') {
-            // German patterns
-            const formatMatch = factsHtml.match(/<strong>Vorträge von ([^<]+)<\/strong>/);
-            if (formatMatch) {
-                facts.push({ label: labels.format, value: `Vorträge, ${formatMatch[1]}` });
-            }
-
-            const abstractMatch = factsHtml.match(/<strong>Abstracts sollten ([^<]+)<\/strong>/);
-            if (abstractMatch) {
-                facts.push({ label: labels.abstract, value: abstractMatch[1] });
-            }
-
-            const deadlineMatch = factsHtml.match(/<strong>Einreichungsfrist ist der ([^<]+)<\/strong>/);
-            if (deadlineMatch) {
-                facts.push({ label: labels.deadline, value: deadlineMatch[1] });
-            }
-
-            const languageMatch = factsHtml.match(/Konferenzsprachen sind ([^.]+)\./);
-            if (languageMatch) {
-                facts.push({ label: labels.languages, value: languageMatch[1] });
-            }
-
-            const participantsMatch = factsHtml.match(/auf (\d+) Personen begrenzt/);
-            if (participantsMatch) {
-                facts.push({ label: labels.participants, value: `max. ${participantsMatch[1]} Personen` });
-            }
-
-            if (factsHtml.includes('keine Tagungsgebühr')) {
-                facts.push({ label: labels.fee, value: 'keine' });
-            }
-
-            if (factsHtml.includes('Reisekosten können leider nicht übernommen werden')) {
-                facts.push({ label: labels.travel, value: 'können nicht übernommen werden' });
-            }
-        } else {
-            // English patterns
-            const formatMatch = factsHtml.match(/<strong>20-minute presentations<\/strong>/i);
-            if (formatMatch) {
-                facts.push({ label: labels.format, value: '20-minute presentations' });
-            }
-
-            const abstractMatch = factsHtml.match(/<strong>Abstracts should be ([^<]+)<\/strong>/i);
-            if (abstractMatch) {
-                facts.push({ label: labels.abstract, value: abstractMatch[1] });
-            }
-
-            const deadlineMatch = factsHtml.match(/<strong>Submission deadline[:\s]+([^<]+)<\/strong>/i);
-            if (deadlineMatch) {
-                facts.push({ label: labels.deadline, value: deadlineMatch[1] });
-            }
-
-            const languageMatch = factsHtml.match(/Conference languages[:\s]+([^.]+)\./i);
-            if (languageMatch) {
-                facts.push({ label: labels.languages, value: languageMatch[1] });
-            }
-
-            const participantsMatch = factsHtml.match(/limited to (\d+) participants/i);
-            if (participantsMatch) {
-                facts.push({ label: labels.participants, value: `max. ${participantsMatch[1]}` });
-            }
-
-            if (factsHtml.includes('no conference fee') || factsHtml.includes('No registration fee')) {
-                facts.push({ label: labels.fee, value: 'none' });
-            }
-
-            if (factsHtml.includes('Travel costs cannot be covered') || factsHtml.includes('travel expenses cannot be reimbursed')) {
-                facts.push({ label: labels.travel, value: 'cannot be covered' });
-            }
-        }
-
-        if (facts.length > 0) {
-            return `
-                <ul class="facts-list">
-                    ${facts.map(fact => `
-                        <li>
-                            <span class="facts-label">${fact.label}:</span>
-                            <span class="facts-value">${fact.value}</span>
-                        </li>
-                    `).join('')}
-                </ul>
-            `;
-        }
-
-        // Fallback: return the HTML as-is
-        return factsHtml;
-    }
-
-    /**
-     * Inject parsed content into DOM
-     * @param {Object} sections - Parsed sections object
-     * @param {string} lang - Current language
-     */
-    function injectContent(sections, lang) {
-        // Intro text - render tokens as HTML
-        if (sections.intro.length > 0) {
+    function injectContent(sections) {
+        // Intro
+        if (sections.intro && sections.intro.length > 0) {
             elements.introText.innerHTML = renderTokens(sections.intro);
         }
 
-        // Quote
-        if (sections.quote) {
-            elements.quoteText.textContent = sections.quote;
+        // Quote — render to HTML, then extract plain text
+        if (sections.quote && sections.quote.length > 0) {
+            const quoteHtml = renderTokens(sections.quote);
+            const temp = document.createElement('div');
+            temp.innerHTML = quoteHtml;
+            elements.quoteText.textContent = temp.textContent.trim();
         }
 
-        // Themenfelder - render tokens as flowing HTML
-        if (sections.themenfelder.length > 0) {
-            elements.themenContent.innerHTML = renderTokens(sections.themenfelder);
+        // Topics
+        if (sections.topics && sections.topics.length > 0) {
+            elements.themenContent.innerHTML = renderTokens(sections.topics);
         }
 
-        // Hard facts - render tokens and extract structured data
-        if (sections.hardFacts.length > 0) {
-            const factsHtml = renderTokens(sections.hardFacts);
-            elements.factsContent.innerHTML = generateFactsHTML(factsHtml, lang);
+        // Facts — parse key-value pairs and render as structured list
+        if (sections.facts && sections.facts.length > 0) {
+            const facts = parseFacts(sections.facts);
+            elements.factsContent.innerHTML = renderFacts(facts);
         }
     }
 
+    // ─── Content Loading ─────────────────────────────────────────────
+
     /**
-     * Fetch and process markdown file
-     * @param {string} lang - Language code ('de' or 'en')
+     * Fetch and process markdown file. Uses cache on subsequent calls.
      */
     async function loadContent(lang = 'de') {
         try {
-            const markdownPath = CONFIG.markdownPaths[lang];
-            const response = await fetch(markdownPath);
+            // Return cached content if available
+            if (contentCache[lang]) {
+                injectContent(contentCache[lang]);
+                hideLoading();
+                return;
+            }
+
+            const response = await fetch(CONFIG.markdownPaths[lang]);
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: Markdown file could not be loaded.`);
@@ -515,18 +383,16 @@
                 throw new Error('The markdown file is empty.');
             }
 
-            // Parse sections (language-aware)
-            const sections = parseMarkdownSections(markdown, lang);
+            const sections = parseMarkdown(markdown);
 
-            // Validate parsed content
-            if (sections.themenfelder.length === 0) {
-                console.warn('No topics found. Check the markdown format.');
+            if (!sections.topics || sections.topics.length === 0) {
+                console.warn('No topics found. Check the markdown structure (## topics heading).');
             }
 
-            // Inject content
-            injectContent(sections, lang);
+            // Cache parsed sections
+            contentCache[lang] = sections;
 
-            // Hide loading
+            injectContent(sections);
             hideLoading();
 
         } catch (error) {
@@ -535,11 +401,9 @@
         }
     }
 
-    /**
-     * Initialize the application
-     */
+    // ─── Initialization ──────────────────────────────────────────────
+
     function init() {
-        // Check if marked.js is loaded
         if (typeof marked !== 'undefined') {
             marked.setOptions({
                 breaks: true,
@@ -547,23 +411,20 @@
             });
         }
 
-        // Initialize navigation
         initNavigation();
-
-        // Initialize navigation scroll behavior (hide on scroll down)
         initNavScroll();
-
-        // Initialize scroll hint (hide on scroll)
         initScrollHint();
-
-        // Initialize language switcher
         initLanguageSwitcher();
 
-        // Load content in default language
+        // Retry button (replaces inline onclick)
+        const retryBtn = document.getElementById('retry-btn');
+        if (retryBtn) {
+            retryBtn.addEventListener('click', () => location.reload());
+        }
+
         loadContent(currentLang);
     }
 
-    // Start application when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
