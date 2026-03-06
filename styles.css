@@ -378,7 +378,7 @@ strong {
 }
 
 .hero-title {
-    max-width: 800px;
+    max-width: 900px;
     margin-bottom: var(--space-lg);
     display: flex;
     flex-direction: column;
