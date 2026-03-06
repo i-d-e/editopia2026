@@ -147,7 +147,7 @@
     const UI_TRANSLATIONS = {
         de: {
             heroTitle: 'Zur Zukunft von Dokumentologie und Editorik im Postdigitalen',
-            heroMeta: 'KONFERENZ DES IDE',
+            heroMeta: 'KONFERENZ DES',
             heroBadge: 'CALL FOR PAPERS',
             sectionThemen: 'Themenfelder',
             sectionFacts: 'Einreichung',
@@ -162,7 +162,7 @@
         },
         en: {
             heroTitle: 'On the Future of Documentology and Scholarly Editing in the Post-Digital Age',
-            heroMeta: 'CONFERENCE OF THE IDE',
+            heroMeta: 'CONFERENCE OF THE',
             heroBadge: 'CALL FOR PAPERS',
             sectionThemen: 'Topics',
             sectionFacts: 'Submission',
@@ -209,8 +209,8 @@
         });
 
         const t = UI_TRANSLATIONS[lang];
-        document.getElementById('hero-title').textContent = t.heroTitle;
-        document.querySelector('.hero-meta span:first-child').textContent = t.heroMeta;
+        document.getElementById('hero-title-sub').textContent = t.heroTitle;
+        document.querySelector('.hero-meta-ide span').textContent = t.heroMeta;
         document.querySelector('.hero-badge').textContent = t.heroBadge;
         document.querySelector('.section-themen .section-title').textContent = t.sectionThemen;
         document.querySelector('.facts-title').textContent = t.sectionFacts;

@@ -380,6 +380,25 @@ strong {
 .hero-title {
     max-width: 800px;
     margin-bottom: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.hero-title-name {
+    display: block;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+}
+
+.hero-title-sub {
+    display: block;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-weight: 400;
+    color: #4A4A4A;
+    letter-spacing: 0;
 }
 
 .hero-meta {
@@ -392,6 +411,19 @@ strong {
     font-size: 0.875rem;
     letter-spacing: 0.1em;
     color: #4A4A4A;  /* 5.9:1 on off-white */
+}
+
+.hero-meta-ide {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.hero-ide-logo {
+    height: 24px;
+    width: auto;
+    opacity: 0.6;
+    vertical-align: middle;
 }
 
 .meta-pipe {
