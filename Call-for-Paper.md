@@ -50,7 +50,7 @@ Digital editions have become an everyday scholarly practice. The critical repres
 
 One fundamental observation underlies all these questions: data constitute the content and core of the edition, and data themselves are primarily fluid, processual and networked. 
 
-On the occasion of its 20th anniversary, the Institute for Documentology and Scholarly Editing (IDE) invites scholars to engage with these questions at the international conference **Editopia 2046**. By *post-digital* we understand a condition in which digital tools and modes of thinking are no longer conceived primarily in opposition to the analogue, but as the foundation of humanities scholarship and, consequently, as the basis for further-reaching questions.
+On the occasion of its 20th anniversary, the Institute for Documentology and Scholarly Editing (IDE) invites scholars to engage with these questions at the international conference **Editopia**. By *post-digital* we understand a condition in which digital tools and modes of thinking are no longer conceived primarily in opposition to the analogue, but as the foundation of humanities scholarship and, consequently, as the basis for further-reaching questions.
 
 We therefore invite contributions addressing, but not limited to, the following thematic areas:
 

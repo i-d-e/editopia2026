@@ -350,10 +350,16 @@
             elements.themenContent.innerHTML = renderTokens(sections.topics);
         }
 
-        // Facts — parse key-value pairs and render as structured list
+        // Submission prose + structured facts overview
+        let factsHtml = '';
+        if (sections.submission && sections.submission.length > 0) {
+            factsHtml += renderTokens(sections.submission);
+        }
         if (sections.facts && sections.facts.length > 0) {
-            const facts = parseFacts(sections.facts);
-            elements.factsContent.innerHTML = renderFacts(facts);
+            factsHtml += renderFacts(parseFacts(sections.facts));
+        }
+        if (factsHtml) {
+            elements.factsContent.innerHTML = factsHtml;
         }
     }
 
