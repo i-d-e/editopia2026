@@ -733,7 +733,39 @@ strong {
 }
 
 .footer-institute {
+    margin-bottom: var(--space-sm);
+}
+
+.footer-local-org {
+    max-width: 600px;
+    margin: 0 auto var(--space-sm);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--dim-grey);
+}
+
+.footer-local-org a {
+    color: var(--dim-grey);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--transition-fast);
+}
+
+.footer-local-org a:hover {
+    color: var(--ink-black);
+}
+
+.footer-partner-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-lg);
     margin-bottom: var(--space-md);
+}
+
+.footer-partner-logo {
+    height: 40px;
+    width: auto;
 }
 
 .footer-institute a {
