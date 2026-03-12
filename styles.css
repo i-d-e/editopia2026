@@ -344,6 +344,7 @@ strong {
 .hero-logo,
 .hero-title,
 .hero-meta,
+.hero-org,
 .hero-badge,
 .scroll-hint {
     position: relative;
@@ -420,14 +421,58 @@ strong {
 }
 
 .hero-ide-logo {
-    height: 24px;
+    height: 36px;
     width: auto;
-    opacity: 0.6;
     vertical-align: middle;
 }
 
 .meta-pipe {
     color: var(--dim-grey);
+}
+
+/* Hero - Local Organization */
+.hero-org {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 600px;
+    margin-top: var(--space-lg);
+    text-align: center;
+}
+
+.hero-org-label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim-grey);
+}
+
+.hero-org-text {
+    font-size: 0.75rem;
+    line-height: 1.8;
+    color: #4A4A4A;
+    margin-bottom: 0;
+}
+
+.hero-org-text a {
+    color: #4A4A4A;
+}
+
+.hero-org-text a:hover {
+    opacity: 0.7;
+}
+
+.hero-org-logo {
+    height: 24px;
+    width: auto;
+    vertical-align: middle;
+    margin: 0 0.15em;
+}
+
+.hero-org-logo-ized {
+    border-radius: 2px;
 }
 
 .hero-badge {
@@ -759,13 +804,17 @@ strong {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: var(--space-lg);
+    gap: var(--space-md);
     margin-bottom: var(--space-md);
 }
 
 .footer-partner-logo {
-    height: 40px;
+    height: 28px;
     width: auto;
+}
+
+.footer-partner-logo-ized {
+    border-radius: 2px;
 }
 
 .footer-institute a {
@@ -1089,6 +1138,19 @@ strong {
 
     .meta-pipe {
         display: none;
+    }
+
+    .hero-org {
+        margin-top: var(--space-md);
+        max-width: 90%;
+    }
+
+    .hero-org-text {
+        font-size: 0.6875rem;
+    }
+
+    .hero-org-logo {
+        height: 20px;
     }
 
     .nav-inner {
