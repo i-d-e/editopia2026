@@ -1050,6 +1050,23 @@ strong {
 }
 
 /* ========================================
+   No-JS Fallback
+   ======================================== */
+.noscript-notice {
+    max-width: var(--content-max);
+    margin: var(--space-xl) auto;
+    padding: var(--space-xl);
+    text-align: center;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+}
+
+.noscript-notice a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* ========================================
    Error Modal
    ======================================== */
 .error-modal {
