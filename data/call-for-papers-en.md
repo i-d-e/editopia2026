@@ -44,13 +44,13 @@ These thematic areas are intended as points of orientation. We also welcome prop
 
 We invite submissions for **20-minute papers**. Abstracts should comprise **2,000–4,000 characters (including spaces and references)** and clearly outline the research question, methodological approach, and expected results. Please also include a short biographical note.
 
-The **submission deadline is 22 March 2026**. Notifications of acceptance will be sent by the end of April 2026\. Selected contributions are planned for publication in the **SIDE book series**. The conference languages are **English** and **German**. Participation is limited to **60 participants**. No conference fee will be charged.
+The **submission deadline has been extended to 5 April 2026**. Notifications of acceptance will be sent by the end of April 2026\. Selected contributions are planned for publication in the **SIDE book series**. The conference languages are **English** and **German**. Participation is limited to **60 participants**. No conference fee will be charged.
 
 ## facts
 
 Format: 20-minute papers
 Abstract: 2,000–4,000 characters (including spaces and references)
-Deadline: 22 March 2026
+Deadline: 5 April 2026 (extended)
 Languages: English and German
 Participants: max. 60
 Fee: none

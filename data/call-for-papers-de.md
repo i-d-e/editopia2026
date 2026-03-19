@@ -44,13 +44,13 @@ Diese Themenfelder verstehen sich als Orientierung. Wir begrüßen auch Vorschl�
 
 Wir bitten um Einreichungen für **Vorträge von 20 Minuten Länge**. **Abstracts sollten 2000 bis 4000 Zeichen inklusive Leerzeichen und Referenzen** umfassen und eine klare Fragestellung, den methodischen Zugang sowie die erwarteten Ergebnisse skizzieren. Bitte fügen Sie eine kurze, biografische Notiz bei.
 
-**Einreichungsfrist ist der 22\. März 2026**. Die Benachrichtigung über die Annahme erfolgt bis Ende April 2026\. Eine Publikation ausgewählter Beiträge ist in der SIDE-Schriftenreihe vorgesehen. Die Konferenzsprachen sind Englisch und Deutsch. Die Teilnahme ist auf 60 Personen begrenzt. Eine Tagungsgebühr wird nicht erhoben.
+**Die Einreichungsfrist wurde verlängert: neue Deadline ist der 5\. April 2026**. Die Benachrichtigung über die Annahme erfolgt bis Ende April 2026\. Eine Publikation ausgewählter Beiträge ist in der SIDE-Schriftenreihe vorgesehen. Die Konferenzsprachen sind Englisch und Deutsch. Die Teilnahme ist auf 60 Personen begrenzt. Eine Tagungsgebühr wird nicht erhoben.
 
 ## facts
 
 Format: Vorträge, 20 Minuten Länge
 Abstract: 2000–4000 Zeichen inkl. Leerzeichen und Referenzen
-Deadline: 22. März 2026
+Deadline: 5. April 2026 (verlängert)
 Sprachen: Englisch und Deutsch
 Teilnehmer*innen: max. 60 Personen
 Gebühr: keine

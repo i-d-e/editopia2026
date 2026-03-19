@@ -34,7 +34,7 @@ Diese Themenfelder verstehen sich als Orientierung. Wir begrüßen auch Vorschl�
 
 Wir bitten um Einreichungen für **Vorträge von 20 Minuten Länge**. **Abstracts sollten 2000 bis 4000 Zeichen inklusive Leerzeichen und Referenzen** umfassen und eine klare Fragestellung, den methodischen Zugang sowie die erwarteten Ergebnisse skizzieren. Bitte fügen Sie eine kurze, biografische Notiz bei.
 
-**Einreichungsfrist ist der 22\. März 2026**. Die Benachrichtigung über die Annahme erfolgt bis Ende April 2026\. Eine Publikation ausgewählter Beiträge ist in der SIDE-Schriftenreihe vorgesehen. Die Konferenzsprachen sind Englisch und Deutsch. Die Teilnahme ist auf 60 Personen begrenzt. Eine Tagungsgebühr wird nicht erhoben.
+**Die Einreichungsfrist wurde verlängert: neue Deadline ist der 5\. April 2026**. Die Benachrichtigung über die Annahme erfolgt bis Ende April 2026\. Eine Publikation ausgewählter Beiträge ist in der SIDE-Schriftenreihe vorgesehen. Die Konferenzsprachen sind Englisch und Deutsch. Die Teilnahme ist auf 60 Personen begrenzt. Eine Tagungsgebühr wird nicht erhoben.
 
 Abstracts und Rückfragen richten Sie bitte an [editopia2026@i-d-e.de](mailto:editopia2026@i-d-e.de). Tagungswebseite: [https://editopia2026.i-d-e.de](https://i-d-e.github.io/editopia2026/)  
 
@@ -76,7 +76,7 @@ These thematic areas are intended as points of orientation. We also welcome prop
 
 We invite submissions for **20-minute papers**. Abstracts should comprise **2,000–4,000 characters (including spaces and references)** and clearly outline the research question, methodological approach, and expected results. Please also include a short biographical note.
 
-The **submission deadline is 22\. March 2026**. Notifications of acceptance will be sent by the end of April 2026\. Selected contributions are planned for publication in the **SIDE book series**. The conference languages are **English** and **German**. Participation is limited to **60 participants**. No conference fee will be charged.
+The **submission deadline has been extended to 5 April 2026**. Notifications of acceptance will be sent by the end of April 2026\. Selected contributions are planned for publication in the **SIDE book series**. The conference languages are **English** and **German**. Participation is limited to **60 participants**. No conference fee will be charged.
 
 Please send abstracts and inquiries to [**editopia2026@i-d-e.de**](mailto:editopia2026@i-d-e.de). Conference page: [https://editopia2026.i-d-e.de](https://i-d-e.github.io/editopia2026/)  
 
