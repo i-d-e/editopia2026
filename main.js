@@ -69,9 +69,10 @@
     function initNavigation() {
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (!href || !href.startsWith('#')) return; // real page nav → let the browser handle it
                 e.preventDefault();
-                const targetId = link.getAttribute('href').slice(1);
-                const target = document.getElementById(targetId);
+                const target = document.getElementById(href.slice(1));
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth' });
                 }
