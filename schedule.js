@@ -50,11 +50,12 @@
     const tc = (r, i) => cell(r, i).trim();
     const isBlankRow = r => r.every(c => c.trim() === '');
 
-    const TIME = '\\d{1,2}:\\d{2}';
-    // dash class accepts figure-dash, en-dash, em-dash and hyphen (hyphen last = literal)
-    const RANGE_RE = new RegExp('^\\s*' + TIME + '\\s*[\\u2012\\u2013\\u2014-]\\s*' + TIME + '\\s*$');
+    const TIME = '\\d{1,2}:\\d{2}(?::\\d{2})?'; // HH:MM, optional :SS (Sheets sometimes serialises seconds)
+    // dash class accepts figure-dash, en-dash, em-dash, minus sign and hyphen (hyphen last = literal)
+    const RANGE_RE = new RegExp('^\\s*' + TIME + '\\s*[\\u2012\\u2013\\u2014\\u2212-]\\s*' + TIME + '\\s*$');
     const SINGLE_RE = new RegExp('^\\s*' + TIME + '\\s*$');
-    const OPEN_RE = /^\s*ab\s+\d{1,2}:\d{2}\s*$/i; // "ab 19:00"
+    const OPEN_RE = /^\s*ab\s+\d{1,2}:\d{2}(?::\d{2})?\s*$/i; // "ab 19:00"
+    const hhmm = s => s.replace(/(\d{1,2}:\d{2}):\d{2}/g, '$1'); // drop seconds for display/iso
     function timeKind(s) {
         if (RANGE_RE.test(s)) return 'range';
         if (OPEN_RE.test(s)) return 'open';
@@ -126,11 +127,11 @@
             // PREAMBLE: ignore everything before the first day header (title + subtitle rows)
             if (!seenFirstDay) { bump('preamble'); continue; }
 
-            // SECTION header: range in col1 + "Sektion N" in col2 (col5 = Call-Feld note → suppressed)
-            if (tk === 'range' && /^Sektion\b/i.test(c1)) {
+            // SECTION header: range in col1 + "Sektion/Section N" in col2 (col5 = Call-Feld note → suppressed)
+            if (tk === 'range' && /^(Sektion|Section)\b/i.test(c1)) {
                 const n = (c1.match(/\d+/) || [])[0];
                 day.items.push({
-                    kind: 'section', range: c0, label: c1, sectionNo: n ? +n : null,
+                    kind: 'section', range: hhmm(c0), label: c1, sectionNo: n ? +n : null,
                     note: c4, id: day.id + '-sec-' + (n || day.items.length)
                 });
                 bump('section');
@@ -142,8 +143,8 @@
                 const isBreak = CONFIG.breakLabels.some(b => c1.toLowerCase().includes(b.toLowerCase()));
                 const slug = c1.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 24);
                 const item = isBreak
-                    ? { kind: 'break', range: c0, label: c1, duration: c4, id: day.id + '-brk-' + slug + '-' + day.items.length }
-                    : { kind: 'plenary', range: c0, label: c1, duration: c4, accent: true, open: tk === 'open', id: day.id + '-plen-' + slug + '-' + day.items.length };
+                    ? { kind: 'break', range: hhmm(c0), label: c1, duration: c4, id: day.id + '-brk-' + slug + '-' + day.items.length }
+                    : { kind: 'plenary', range: hhmm(c0), label: c1, duration: c4, accent: true, open: tk === 'open', id: day.id + '-plen-' + slug + '-' + day.items.length };
                 item.flag = flagValue(model, ln, c1, day.label, 'label');
                 day.items.push(item);
                 bump(isBreak ? 'break' : 'plenary');
@@ -152,12 +153,13 @@
 
             // TALK / TBA: single time in col1
             if (tk === 'single') {
-                const iso = day.isoDate ? day.isoDate + 'T' + (c0.length === 4 ? '0' + c0 : c0) : null;
+                const t = hhmm(c0);
+                const iso = day.isoDate ? day.isoDate + 'T' + (t.length === 4 ? '0' + t : t) : null;
                 if (!c2 && !c3) {
-                    day.items.push({ kind: 'tba', time: c0, isoTime: iso, order: c1, duration: c4 });
+                    day.items.push({ kind: 'tba', time: t, isoTime: iso, order: c1, duration: c4 });
                     bump('tba');
                 } else {
-                    const item = { kind: 'talk', time: c0, isoTime: iso, order: c1, speaker: c2, title: c3, duration: c4 };
+                    const item = { kind: 'talk', time: t, isoTime: iso, order: c1, speaker: c2, title: c3, duration: c4 };
                     item.flag = flagValue(model, ln, c2, day.label, 'speaker');
                     day.items.push(item);
                     bump('talk');
@@ -166,7 +168,7 @@
             }
 
             // UNKNOWN: keep visible (muted) rather than drop silently
-            (day || { items: [] }).items.push({ kind: 'unknown', raw: row.slice() });
+            day.items.push({ kind: 'unknown', raw: row.slice() });
             bump('unknown');
             console.warn('[schedule] Unclassified row ' + ln + ':', row);
         }
@@ -204,6 +206,11 @@
     };
     const fmt = (s, v) => s.replace('%s', v);
 
+    const SCHEDULE_MSG = {
+        de: { unknown: n => n + ' Zeile(n) konnten nicht zugeordnet werden – bitte CSV-Format prüfen.' },
+        en: { unknown: n => n + ' row(s) could not be classified – please check the CSV format.' }
+    };
+
     // Footer credit line carries embedded links → localized via innerHTML (parity with main.js)
     const LOCAL_ORG_HTML = {
         de: 'Lokale Organisation Bergische Universität Wuppertal: Team Digital Humanities (<a href="https://geschichte.uni-wuppertal.de/de/lehrgebiete/digital-humanities/" target="_blank" rel="noopener">DH@BUW</a>), mit Unterstützung des Interdisziplinären Zentrums für Editions- und Dokumentwissenschaft (<a href="https://www.ized.uni-wuppertal.de/" target="_blank" rel="noopener">IZED</a>).',
@@ -234,10 +241,12 @@
         const h2 = el('h2', 'sched-day');
         h2.id = day.id;
         h2.appendChild(el('span', 'sched-day-weekday', day.weekday));
-        const sep = el('span', 'sched-day-sep', ' · ');
-        sep.setAttribute('aria-hidden', 'true');
-        h2.appendChild(sep);
-        h2.appendChild(el('span', 'sched-day-date', day.date));
+        if (day.date) {
+            const sep = el('span', 'sched-day-sep', ' · ');
+            sep.setAttribute('aria-hidden', 'true');
+            h2.appendChild(sep);
+            h2.appendChild(el('span', 'sched-day-date', day.date));
+        }
         sec.appendChild(h2);
 
         let list = null; // active <ol> for consecutive talk/tba items
@@ -258,9 +267,8 @@
     }
 
     function renderSection(item) {
-        const sec = el('section', 'schedule-section');
-        sec.setAttribute('aria-labelledby', item.id);
-
+        // Plain bar (no <section> landmark): talks are siblings, so a named <section>
+        // would expose an empty region. The <h3> + following <ol> carry the structure.
         const bar = el('div', 'sched-section');
         const time = el('span', 'sched-section-time', item.range);
         time.setAttribute('aria-hidden', 'true');
@@ -278,8 +286,7 @@
             h3.appendChild(el('span', 'sched-section-n', String(item.sectionNo)));
         }
         bar.appendChild(h3);
-        sec.appendChild(bar);
-        return sec;
+        return bar;
     }
 
     function renderRow(item) {
@@ -348,15 +355,22 @@
         const mount = document.getElementById('schedule');
         mount.textContent = '';
         const frag = document.createDocumentFragment();
+
+        // On-page maintainer hint for partial corruption (re-export gone wrong) — console.warn alone is invisible to organisers
+        const unknown = model.meta.counts.unknown;
+        if (unknown) {
+            const warn = el('p', 'schedule-warning', SCHEDULE_MSG[currentLang].unknown(unknown));
+            warn.setAttribute('role', 'status');
+            frag.appendChild(warn);
+            console.warn('[schedule] ' + unknown + ' unclassified row(s) rendered as raw.');
+        }
+
         model.days.forEach(d => frag.appendChild(renderDay(d)));
         mount.appendChild(frag);
 
         if (model.meta.flags.length) {
             console.warn('[schedule] ' + model.meta.flags.length +
                 ' data-quality flag(s) — review before publishing:', model.meta.flags);
-        }
-        if (model.meta.counts.unknown) {
-            console.warn('[schedule] ' + model.meta.counts.unknown + ' unclassified row(s) rendered as raw.');
         }
         console.info('[schedule] counts', model.meta.counts);
     }
@@ -376,6 +390,11 @@
             node.textContent = node.dataset[lang];
         });
 
+        // Cross-page links resolve to the matching-language target (en.html uses different anchors)
+        document.querySelectorAll('[data-href-de][data-href-en]').forEach(a => {
+            a.href = a.dataset[lang === 'en' ? 'hrefEn' : 'hrefDe'];
+        });
+
         const org = document.getElementById('footer-local-org');
         if (org) org.innerHTML = LOCAL_ORG_HTML[lang];
     }
@@ -388,10 +407,16 @@
         setTimeout(() => { loading.style.display = 'none'; }, 300);
     }
     function showError(message) {
+        const sched = document.getElementById('schedule');
+        if (sched) sched.textContent = ''; // clear the stale "loading…" placeholder behind the modal
         const modal = document.getElementById('error-modal');
         const msg = document.getElementById('error-message');
         if (msg) msg.textContent = message;
-        if (modal) modal.hidden = false;
+        if (modal) {
+            modal.hidden = false;
+            const retry = document.getElementById('retry-btn');
+            if (retry) retry.focus();
+        }
         hideLoading();
     }
 
@@ -469,6 +494,8 @@
         initImpressum();
         const retry = document.getElementById('retry-btn');
         if (retry) retry.addEventListener('click', () => location.reload());
+        const errModal = document.getElementById('error-modal');
+        if (errModal) errModal.addEventListener('keydown', e => { if (e.key === 'Escape') location.reload(); });
         applyLang(currentLang); // localize chrome before data arrives
         loadSchedule();
     }

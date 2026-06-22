@@ -8,7 +8,8 @@
     --ink-black: #000000;
     --paper-white: #FFFFFF;
     --off-white: #F4F4F4;
-    --dim-grey: #999999;  /* 6.3:1 on black, used for decorative/secondary text */
+    --dim-grey: #999999;  /* 6.3:1 on black, used for decorative/secondary (aria-hidden) text */
+    --content-grey: #595959;  /* 7.0:1 on white, 6.4:1 on off-white — WCAG AA for information-bearing text */
     --light-grey: #E0E0E0;
 
     /* Typography */
@@ -1462,21 +1463,21 @@ strong {
    ======================================== */
 
 .programm-header {
-    padding-top: calc(var(--space-3xl) + 60px);   /* clear fixed nav */
-    padding-bottom: var(--space-lg);
+    padding-top: calc(var(--space-2xl) + 60px);   /* clear fixed nav */
+    padding-bottom: var(--space-md);
     background-color: var(--off-white);
     text-align: center;
 }
-.programm-title { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: var(--space-sm); }
+.programm-title { font-size: clamp(1.75rem, 3.5vw, 2.5rem); margin-bottom: var(--space-xs); }
 .programm-subtitle {
     font-family: var(--font-mono); font-size: 0.875rem; letter-spacing: 0.1em; color: #4A4A4A;
 }
 
-.programm-section { padding-top: 0; }
-.container--schedule { max-width: 960px; }
+.programm-section { padding-top: 0; padding-bottom: var(--space-2xl); }
+.container--schedule { max-width: 1400px; }
 
 .schedule {
-    --sched-cols: 6rem 2.25rem minmax(8rem, 14rem) 1fr 4.5rem; /* time no speaker title dur */
+    --sched-cols: 5rem 1.75rem minmax(10rem, 16rem) 1fr 4rem; /* time no speaker title dur */
     border: var(--border-thin);
     border-radius: var(--border-radius);
     overflow: hidden;
@@ -1486,23 +1487,27 @@ strong {
     padding: var(--space-2xl); text-align: center; font-family: var(--font-mono);
     font-size: 0.875rem; letter-spacing: 0.1em; color: var(--dim-grey);
 }
+.schedule-warning {
+    padding: var(--space-sm) var(--space-lg); border-bottom: var(--border-thin);
+    background-color: var(--off-white); font-family: var(--font-mono);
+    font-size: 0.75rem; letter-spacing: 0.05em; color: var(--content-grey);
+}
 #schedule:focus { outline: none; }                 /* programmatic skip target */
 
 /* ---- Day band ---- */
 .schedule-day { display: block; }
 .sched-day {
     border-top: var(--border-thick); border-bottom: var(--border-thin);
-    background-color: var(--off-white); padding: var(--space-md) var(--space-lg);
+    background-color: var(--off-white); padding: var(--space-sm) var(--space-lg);
     font-family: var(--font-mono); font-size: 0.875rem; font-weight: 500;
     letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-black);
 }
 .schedule-day:first-of-type .sched-day { border-top: none; }
 
 /* ---- Section band: box + pipe ---- */
-.schedule-section { display: block; }
 .sched-section {
     display: flex; align-items: center; gap: var(--space-md);
-    padding: var(--space-sm) var(--space-lg); border-bottom: var(--border-thin);
+    padding: var(--space-xs) var(--space-lg); border-bottom: var(--border-thin);
     background-color: var(--paper-white);
 }
 .sched-section-time {
@@ -1526,42 +1531,40 @@ strong {
 .sched-dl {
     display: grid; grid-template-columns: var(--sched-cols);
     align-items: baseline; gap: var(--space-xs) var(--space-md);
-    padding: var(--space-md) var(--space-lg); margin: 0;
+    padding: var(--space-sm) var(--space-lg); margin: 0;
     border-bottom: var(--border-thin); transition: background-color var(--transition-fast);
 }
-.talk-list:last-child .sched-row:last-child .sched-dl { border-bottom: none; }
+/* last visible element of the last day drops its border, regardless of type (talk/band/section/unknown) */
+.schedule-day:last-of-type > *:last-child,
+.schedule-day:last-of-type .talk-list:last-child .sched-row:last-child .sched-dl { border-bottom: none; }
 .sched-row:hover .sched-dl { background-color: var(--off-white); }
 .sched-time { font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 500; color: var(--ink-black); }
-.sched-no {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 1.75rem; height: 1.75rem; border: var(--border-thin); border-radius: 50%;
-    font-family: var(--font-mono); font-size: 0.75rem; color: var(--dim-grey);
-}
-.sched-speaker { font-family: var(--font-primary); font-weight: 600; font-size: 0.9375rem; line-height: 1.4; }
-.sched-title  { font-family: var(--font-primary); font-weight: 500; font-size: 1rem; line-height: 1.45; }
-.sched-dur    { font-family: var(--font-mono); font-size: 0.75rem; color: var(--dim-grey); text-align: right; white-space: nowrap; }
+.sched-no { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--content-grey); text-align: center; }
+.sched-speaker { font-family: var(--font-primary); font-weight: 600; font-size: 0.9375rem; line-height: 1.35; }
+.sched-title  { font-family: var(--font-primary); font-weight: 500; font-size: 0.9375rem; line-height: 1.4; }
+.sched-dur    { font-family: var(--font-mono); font-size: 0.75rem; color: var(--content-grey); text-align: right; white-space: nowrap; }
 
 /* ---- TBA ---- */
-.sched-tba { grid-column: 3 / 5; font-style: italic; color: var(--dim-grey); font-weight: 400; }
+.sched-tba { grid-column: 3 / 5; font-style: italic; color: var(--content-grey); font-weight: 400; }
 
 /* ---- Bands: break (muted) + plenary (inverted) ---- */
 .sched-band {
     display: grid; grid-template-columns: 1fr auto; align-items: baseline;
-    gap: var(--space-xs) var(--space-md); padding: var(--space-md) var(--space-lg);
+    gap: var(--space-xs) var(--space-md); padding: var(--space-sm) var(--space-lg);
     border-bottom: var(--border-thin);
 }
 .sched-band-heading { font-size: 1rem; margin: 0; }
 .sched-band-meta { font-family: var(--font-mono); font-size: 0.75rem; text-align: right; white-space: nowrap; margin: 0; }
 .sched-band--break { background-color: var(--off-white); }
-.sched-band--break .sched-band-heading { font-family: var(--font-primary); font-weight: 400; font-style: italic; color: var(--dim-grey); }
-.sched-band--break .sched-band-meta { color: var(--dim-grey); }
+.sched-band--break .sched-band-heading { font-family: var(--font-primary); font-weight: 400; font-style: italic; color: var(--content-grey); }
+.sched-band--break .sched-band-meta { color: var(--content-grey); }
 .sched-band--plenary { background-color: var(--ink-black); color: var(--paper-white); }
 .sched-band--plenary .sched-band-heading { font-family: var(--font-primary); font-weight: 600; }
 .sched-band--plenary .sched-band-meta { color: #AAAAAA; }   /* 7.6:1 on black, as .facts-box */
 .sched-band--plenary :focus-visible { outline-color: var(--paper-white); }
 
 /* ---- Unknown fallback (degraded, never dropped) ---- */
-.sched-row--unknown { padding: var(--space-md) var(--space-lg); color: var(--dim-grey); font-family: var(--font-mono); font-size: 0.8125rem; border-bottom: var(--border-thin); }
+.sched-row--unknown { padding: var(--space-md) var(--space-lg); color: var(--content-grey); font-family: var(--font-mono); font-size: 0.8125rem; border-bottom: var(--border-thin); }
 
 /* ---- Mobile: stack ---- */
 @media (max-width: 768px) {
