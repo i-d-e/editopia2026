@@ -1505,6 +1505,14 @@ strong {
     border-bottom: var(--border-thin);
 }
 .info-prose h2:first-child { margin-top: 0; }
+.info-lead {
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--light-grey);
+    font-size: 0.9375rem;
+    color: var(--content-grey);
+    font-style: italic;
+}
 .info-prose h3 {
     margin: var(--space-md) 0 var(--space-xs);
     font-family: var(--font-mono);
