@@ -1476,6 +1476,70 @@ strong {
 .programm-section { padding-top: 0; padding-bottom: var(--space-2xl); }
 .container--schedule { max-width: 1400px; }
 
+/* ========================================
+   Travel & Accommodation (anreise.html)
+   ======================================== */
+.page-banner {
+    max-width: var(--content-max);
+    margin: 0 auto var(--space-xl);
+    padding: var(--space-md);
+    border: 2px dashed var(--content-grey);
+    border-radius: var(--border-radius);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--content-grey);
+    text-align: center;
+}
+
+.info-prose {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+}
+.info-prose h2 {
+    font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+    margin: var(--space-2xl) 0 var(--space-sm);
+    padding-bottom: var(--space-xs);
+    border-bottom: var(--border-thin);
+}
+.info-prose h2:first-child { margin-top: 0; }
+.info-prose h3 {
+    margin: var(--space-md) 0 var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+}
+.info-prose p { margin-bottom: var(--space-sm); }
+.info-prose ul { list-style: none; margin: 0 0 var(--space-md); }
+.info-prose li {
+    padding: var(--space-xs) 0;
+    border-bottom: 1px solid var(--light-grey);
+}
+.info-prose li:last-child { border-bottom: none; }
+.info-prose a { text-decoration: underline; text-underline-offset: 2px; }
+
+.info-label {
+    display: inline-block;
+    min-width: 9rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.03em;
+    color: var(--content-grey);
+}
+
+.placeholder {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 0.1em 0.45em;
+    border: 1px dashed var(--content-grey);
+    border-radius: 4px;
+    color: var(--content-grey);
+    white-space: nowrap;
+}
+
 .schedule {
     --sched-cols: 5rem 1.75rem minmax(10rem, 16rem) 1fr 4rem; /* time no speaker title dur */
     border: var(--border-thin);
