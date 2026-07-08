@@ -1520,11 +1520,12 @@ strong {
 }
 .info-prose p { margin-bottom: var(--space-sm); }
 .info-prose ul { list-style: none; margin: 0 0 var(--space-md); }
-.info-prose li {
+.info-prose li { padding: var(--space-xs) 0; }
+/* label/value rows: fixed label column, value wraps within its own column */
+.info-prose li:has(> .info-label) {
     display: flex;
     align-items: baseline;
     gap: var(--space-sm);
-    padding: var(--space-xs) 0;
 }
 .info-prose a { text-decoration: underline; text-underline-offset: 2px; }
 
@@ -1535,6 +1536,9 @@ strong {
     letter-spacing: 0.03em;
     color: var(--content-grey);
 }
+
+.info-prose ul.hotel-list { list-style: disc; padding-left: 1.25rem; }
+.hotel-addr { color: var(--content-grey); }
 
 .placeholder {
     font-family: var(--font-mono);
