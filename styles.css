@@ -1501,8 +1501,6 @@ strong {
 .info-prose h2 {
     font-size: clamp(1.25rem, 2.5vw, 1.6rem);
     margin: var(--space-2xl) 0 var(--space-sm);
-    padding-bottom: var(--space-xs);
-    border-bottom: var(--border-thin);
 }
 .info-prose h2:first-child { margin-top: 0; }
 .info-lead {
@@ -1523,15 +1521,15 @@ strong {
 .info-prose p { margin-bottom: var(--space-sm); }
 .info-prose ul { list-style: none; margin: 0 0 var(--space-md); }
 .info-prose li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
     padding: var(--space-xs) 0;
-    border-bottom: 1px solid var(--light-grey);
 }
-.info-prose li:last-child { border-bottom: none; }
 .info-prose a { text-decoration: underline; text-underline-offset: 2px; }
 
 .info-label {
-    display: inline-block;
-    min-width: 9rem;
+    flex: 0 0 9rem;
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     letter-spacing: 0.03em;
@@ -1567,7 +1565,7 @@ strong {
     font-size: 0.8125rem;
     line-height: 1.6;
     color: var(--content-grey);
-    text-align: center;
+    text-align: left;
 }
 
 .schedule {
