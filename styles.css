@@ -1548,6 +1548,27 @@ strong {
     white-space: nowrap;
 }
 
+.info-fig {
+    max-width: 640px;
+    margin: var(--space-lg) auto var(--space-xl);
+}
+.info-fig img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: var(--border-thin);
+    border-radius: var(--border-radius);
+    background-color: var(--paper-white);
+}
+.info-fig figcaption {
+    margin-top: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--content-grey);
+    text-align: center;
+}
+
 .schedule {
     --sched-cols: 5rem 1.75rem minmax(10rem, 16rem) 1fr 4rem; /* time no speaker title dur */
     border: var(--border-thin);
