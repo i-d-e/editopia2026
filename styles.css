@@ -1554,7 +1554,7 @@ strong {
     max-width: 640px;
     margin: var(--space-lg) auto var(--space-xl);
 }
-.info-fig a { display: block; text-decoration: none; }
+.info-fig > a { display: block; text-decoration: none; }
 .info-fig img {
     display: block;
     width: 100%;
