@@ -19,11 +19,19 @@ Hinweise in Spalte 5 der Sektionszeilen und Klammernotizen wie `(CP: …)` werde
 auf der Seite zwar *nicht angezeigt*, stehen aber trotzdem im öffentlichen Dateitext.
 Solche Vermerke nur im privaten Sheet halten, nicht in der exportierten Fassung.
 
-## Spaltenschema (feste Reihenfolge, 5 Spalten)
+## Spaltenschema (feste Reihenfolge, 6 Spalten)
 
-| Spalte | 1 | 2 | 3 | 4 | 5 |
-|---|---|---|---|---|---|
-| Bedeutung | Zeit | Nr. / Label | Vortragende | Titel | Dauer |
+| Spalte | 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|---|
+| Bedeutung | Zeit | Nr. / Label | Vortragende | Titel | Dauer | Moderation |
+
+**Spalte 6 (Moderation)** ist optional und wirkt nur auf Sektions-, Plenums- und
+Pausenzeilen: Steht dort ein Name, erscheint er auf dem jeweiligen Balken als
+„Moderation:" bzw. „Chair:" in der englischen Ansicht. Bleibt die Spalte leer oder
+fehlt sie ganz (ältere Exporte mit nur 5 Spalten), ändert sich nichts.
+
+> **Wichtig:** Die Spalte muss **im Google Sheet** angelegt werden. Wird sie nur hier
+> in der CSV ergänzt, ist sie beim nächsten Export wieder verschwunden.
 
 Zeilentypen werden **strukturell** erkannt (nicht nach Inhalt):
 

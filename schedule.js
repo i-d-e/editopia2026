@@ -103,10 +103,11 @@
             if (isBlankRow(row)) { bump('blank'); continue; }
 
             const c0 = tc(row, 0), c1 = tc(row, 1), c2 = tc(row, 2), c3 = tc(row, 3), c4 = tc(row, 4);
+            const c5 = tc(row, 5); // optional 6th column: chair / moderation (absent in older exports)
             const tk = timeKind(c0);
 
-            // DAY header: weekday at start AND cols 2-5 empty
-            if (CONFIG.weekdays.some(w => c0.startsWith(w)) && !c1 && !c2 && !c3 && !c4) {
+            // DAY header: weekday at start AND cols 2-6 empty
+            if (CONFIG.weekdays.some(w => c0.startsWith(w)) && !c1 && !c2 && !c3 && !c4 && !c5) {
                 const iso = parseGermanDate(c0);
                 dayOrd++;
                 const parts = c0.split('·');
@@ -132,7 +133,7 @@
                 const n = (c1.match(/\d+/) || [])[0];
                 day.items.push({
                     kind: 'section', range: hhmm(c0), label: c1, sectionNo: n ? +n : null,
-                    note: c4, id: day.id + '-sec-' + (n || day.items.length)
+                    note: c4, moderation: c5, id: day.id + '-sec-' + (n || day.items.length)
                 });
                 bump('section');
                 continue;
@@ -143,8 +144,8 @@
                 const isBreak = CONFIG.breakLabels.some(b => c1.toLowerCase().includes(b.toLowerCase()));
                 const slug = c1.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 24);
                 const item = isBreak
-                    ? { kind: 'break', range: hhmm(c0), label: c1, duration: c4, id: day.id + '-brk-' + slug + '-' + day.items.length }
-                    : { kind: 'plenary', range: hhmm(c0), label: c1, duration: c4, accent: true, open: tk === 'open', id: day.id + '-plen-' + slug + '-' + day.items.length };
+                    ? { kind: 'break', range: hhmm(c0), label: c1, duration: c4, moderation: c5, id: day.id + '-brk-' + slug + '-' + day.items.length }
+                    : { kind: 'plenary', range: hhmm(c0), label: c1, duration: c4, moderation: c5, accent: true, open: tk === 'open', id: day.id + '-plen-' + slug + '-' + day.items.length };
                 item.flag = flagValue(model, ln, c1, day.label, 'label');
                 day.items.push(item);
                 bump(isBreak ? 'break' : 'plenary');
@@ -286,7 +287,16 @@
             h3.appendChild(el('span', 'sched-section-n', String(item.sectionNo)));
         }
         bar.appendChild(h3);
+        if (item.moderation) bar.appendChild(renderModeration(item.moderation, 'sched-section-mod'));
         return bar;
+    }
+
+    // Chair / moderation line, fed by the optional 6th CSV column
+    function renderModeration(name, className) {
+        const wrap = el('p', className);
+        wrap.appendChild(chrome('span', 'sched-mod-label', 'Moderation: ', 'Chair: '));
+        wrap.appendChild(document.createTextNode(name));
+        return wrap;
     }
 
     function renderRow(item) {
@@ -344,6 +354,7 @@
         meta.appendChild(el('span', 'sched-band-time', item.range));
         if (item.duration) meta.appendChild(el('span', 'sched-band-dur', ' · ' + item.duration));
         div.appendChild(meta);
+        if (item.moderation) div.appendChild(renderModeration(item.moderation, 'sched-band-mod'));
         return div;
     }
 

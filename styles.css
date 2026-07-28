@@ -1720,6 +1720,19 @@ strong {
 .sched-band--plenary .sched-band-meta { color: #AAAAAA; }   /* 7.6:1 on black, as .facts-box */
 .sched-band--plenary :focus-visible { outline-color: var(--paper-white); }
 
+/* ---- Chair / moderation (optional 6th CSV column) ---- */
+.sched-band-mod {
+    grid-column: 1; margin: 0;
+    font-family: var(--font-mono); font-size: 0.75rem;
+}
+.sched-band--plenary .sched-band-mod { color: #AAAAAA; }   /* 7.6:1 on black */
+.sched-band--break .sched-band-mod { color: var(--content-grey); }
+.sched-section-mod {
+    margin: 0 0 0 auto;
+    font-family: var(--font-mono); font-size: 0.75rem; color: var(--content-grey);
+}
+.sched-mod-label { color: var(--dim-grey); }
+
 /* ---- Unknown fallback (degraded, never dropped) ---- */
 .sched-row--unknown { padding: var(--space-md) var(--space-lg); color: var(--content-grey); font-family: var(--font-mono); font-size: 0.8125rem; border-bottom: var(--border-thin); }
 
