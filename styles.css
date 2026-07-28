@@ -736,6 +736,11 @@ strong {
     margin-bottom: var(--space-xl);
 }
 
+/* No trailing gap when the box ends with the facts list (submit button removed) */
+.facts-content:last-child {
+    margin-bottom: 0;
+}
+
 .facts-list {
     list-style: none;
     font-family: var(--font-mono);

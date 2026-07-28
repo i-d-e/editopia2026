@@ -155,7 +155,6 @@
             sectionRegistration: 'Anmeldung',
             registerBtn: 'Jetzt anmelden',
             sectionFacts: 'Einreichung',
-            submitBtn: 'Abstract einreichen',
             quoteLabel: '[ FRAGESTELLUNG ]',
             heroOrgLabel: 'Lokale Organisation',
             heroOrgText: 'Bergische Universität Wuppertal: Team Digital Humanities <a href="https://geschichte.uni-wuppertal.de/de/lehrgebiete/digital-humanities/" target="_blank" rel="noopener"><img src="assets/img/dhbuw-logo-grey.png" alt="DH@BUW" class="hero-org-logo"></a>, mit Unterstützung des Interdisziplinären Zentrums für Editions- und Dokumentwissenschaft <a href="https://www.ized.uni-wuppertal.de/" target="_blank" rel="noopener"><img src="assets/img/ized-logo-grey.png" alt="IZED" class="hero-org-logo hero-org-logo-ized"></a>.',
@@ -175,7 +174,6 @@
             sectionRegistration: 'Registration',
             registerBtn: 'Register now',
             sectionFacts: 'Submission',
-            submitBtn: 'Submit Abstract',
             quoteLabel: '[ KEY QUESTION ]',
             heroOrgLabel: 'Local Organization',
             heroOrgText: 'University of Wuppertal: Digital Humanities Team <a href="https://geschichte.uni-wuppertal.de/de/lehrgebiete/digital-humanities/" target="_blank" rel="noopener"><img src="assets/img/dhbuw-logo-grey.png" alt="DH@BUW" class="hero-org-logo"></a>, supported by the Interdisciplinary Center for Editing and Document Studies <a href="https://www.ized.uni-wuppertal.de/" target="_blank" rel="noopener"><img src="assets/img/ized-logo-grey.png" alt="IZED" class="hero-org-logo hero-org-logo-ized"></a>.',
@@ -236,7 +234,6 @@
             regBtn.textContent = t.registerBtn;
         }
 
-        document.getElementById('submit-btn').textContent = t.submitBtn;
         document.querySelector('.quote-label').textContent = t.quoteLabel;
 
         const heroOrgLabel = document.getElementById('hero-org-label');
