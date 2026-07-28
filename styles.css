@@ -650,6 +650,62 @@ strong {
 }
 
 /* ========================================
+   Registration Section
+   ======================================== */
+.reg-box {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: var(--space-xl);
+    border: var(--border-medium);
+    border-radius: var(--border-radius-lg);
+    text-align: center;
+}
+
+.reg-box .section-title {
+    margin-bottom: var(--space-md);
+}
+
+.reg-content {
+    text-align: left;
+    margin-bottom: var(--space-lg);
+}
+
+.reg-content p {
+    margin-bottom: var(--space-md);
+}
+
+/* Prose links stay recognisable — same treatment as .info-prose on the travel page */
+.reg-content a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.reg-content ul {
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    line-height: 1.8;
+}
+
+/* Pipe instead of a bullet — the divider element from the design spec */
+.reg-content li {
+    position: relative;
+    padding-left: var(--space-md);
+    margin-bottom: var(--space-xs);
+}
+
+.reg-content li::before {
+    content: "|";
+    position: absolute;
+    left: 0;
+    color: var(--dim-grey);
+}
+
+.reg-content > :last-child {
+    margin-bottom: 0;
+}
+
+/* ========================================
    Hard Facts Section
    ======================================== */
 .section-facts {

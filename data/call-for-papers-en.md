@@ -12,6 +12,15 @@ One fundamental observation underlies all these questions: data constitute the c
 
 On the occasion of its 20th anniversary, the Institute for Documentology and Scholarly Editing (IDE) invites scholars to engage with these questions at the international conference **Editopia**. By *post-digital* we understand a condition in which digital tools and modes of thinking are no longer conceived primarily in opposition to the analogue, but as the foundation of humanities scholarship and, consequently, as the basis for further-reaching questions.
 
+## registration
+
+**Registration for Editopia 2026 is open.** To register, simply send an e-mail to [editopia2026@i-d-e.de](mailto:editopia2026@i-d-e.de). No conference fee is charged; participation is limited to 60 people.
+
+Please state in your registration whether you would like to join the two accompanying events on Wednesday, 2 September 2026:
+
+- **Social event, 17:00–18:00:** a 60-minute guided tour of the Engels House (in German and English).
+- **Informal dinner, from 19:00:** Restaurant Alaturka (participants pay their own bill).
+
 ## quote
 
 Data constitute the content and core of the edition, and data themselves are primarily fluid, processual and networked.

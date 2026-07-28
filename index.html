@@ -30,7 +30,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Editopia | Konferenz zur Zukunft von Dokumentologie und Editorik">
-    <meta name="twitter:description" content="Internationale Konferenz des IDE. Wuppertal, 2.-4. September 2026. Call for Papers bis 5. April 2026.">
+    <meta name="twitter:description" content="Internationale Konferenz des IDE. Wuppertal, 2.-4. September 2026. Anmeldung offen: editopia2026@i-d-e.de">
     <meta name="twitter:image" content="https://editopia2026.i-d-e.de/assets/img/ide-logo.jpeg">
 
     <!-- Fonts -->
@@ -92,7 +92,7 @@
             <span class="nav-pipe">|</span>
             <a href="anreise.html" class="nav-link" data-de="ANREISE" data-en="TRAVEL">ANREISE</a>
             <span class="nav-pipe">|</span>
-            <a href="#einreichung" class="nav-link" data-de="EINREICHUNG" data-en="SUBMISSION">EINREICHUNG</a>
+            <a href="#anmeldung" class="nav-link" data-de="ANMELDUNG" data-en="REGISTRATION">ANMELDUNG</a>
             <span class="nav-pipe">|</span>
             <div class="lang-switch" id="lang-switch">
                 <button type="button" class="lang-btn active" data-lang="de" aria-label="Deutsch" aria-pressed="true">DE</button>
@@ -129,7 +129,7 @@
             <span class="hero-org-label" id="hero-org-label">Lokale Organisation</span>
             <p class="hero-org-text" id="hero-org-text">Bergische Universität Wuppertal: Team Digital Humanities <a href="https://geschichte.uni-wuppertal.de/de/lehrgebiete/digital-humanities/" target="_blank" rel="noopener"><img src="assets/img/dhbuw-logo-grey.png" alt="DH@BUW" class="hero-org-logo"></a>, mit Unterstützung des Interdisziplinären Zentrums für Editions- und Dokumentwissenschaft <a href="https://www.ized.uni-wuppertal.de/" target="_blank" rel="noopener"><img src="assets/img/ized-logo-grey.png" alt="IZED" class="hero-org-logo hero-org-logo-ized"></a>.</p>
         </div>
-        <span class="hero-badge">CALL FOR PAPERS</span>
+        <span class="hero-badge">ANMELDUNG OFFEN</span>
         <a href="#intro" class="scroll-hint" id="scroll-hint" aria-label="Zum Inhalt scrollen">
             <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M6 9l6 6 6-6"/>
@@ -144,6 +144,21 @@
             <div class="container">
                 <div class="intro-text" id="intro-text">
                     <!-- Content loaded from Markdown -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Anmeldung -->
+        <section class="section section-registration" id="anmeldung">
+            <div class="container">
+                <div class="reg-box">
+                    <h2 class="section-title" id="registration-title">Anmeldung</h2>
+                    <div class="reg-content" id="registration-content">
+                        <!-- Content loaded from Markdown -->
+                    </div>
+                    <a href="mailto:editopia2026@i-d-e.de?subject=Anmeldung%20Editopia%202026" class="btn btn-outline" id="register-btn">
+                        Jetzt anmelden
+                    </a>
                 </div>
             </div>
         </section>
@@ -286,7 +301,9 @@
     </noscript>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- marked v18.0.7 (MIT), vendored locally: the unversioned CDN path stopped
+         resolving when marked 16 dropped the root marked.min.js build -->
+    <script src="assets/js/marked.umd.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

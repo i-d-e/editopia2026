@@ -32,6 +32,7 @@
         errorTitle: document.getElementById('error-title'),
         nav: document.getElementById('nav'),
         introText: document.getElementById('intro-text'),
+        registrationContent: document.getElementById('registration-content'),
         quoteText: document.getElementById('quote-text'),
         themenContent: document.getElementById('themen-content'),
         factsContent: document.getElementById('facts-content'),
@@ -149,8 +150,10 @@
         de: {
             heroTitle: 'Zur Zukunft von Dokumentologie und Editorik im Postdigitalen',
             heroMeta: 'KONFERENZ DES',
-            heroBadge: 'CALL FOR PAPERS',
+            heroBadge: 'ANMELDUNG OFFEN',
             sectionThemen: 'Themenfelder',
+            sectionRegistration: 'Anmeldung',
+            registerBtn: 'Jetzt anmelden',
             sectionFacts: 'Einreichung',
             submitBtn: 'Abstract einreichen',
             quoteLabel: '[ FRAGESTELLUNG ]',
@@ -167,8 +170,10 @@
         en: {
             heroTitle: 'On the Future of Documentology and Scholarly Editing in the Post-Digital Age',
             heroMeta: 'CONFERENCE OF THE',
-            heroBadge: 'CALL FOR PAPERS',
+            heroBadge: 'REGISTRATION OPEN',
             sectionThemen: 'Topics',
+            sectionRegistration: 'Registration',
+            registerBtn: 'Register now',
             sectionFacts: 'Submission',
             submitBtn: 'Submit Abstract',
             quoteLabel: '[ KEY QUESTION ]',
@@ -221,6 +226,16 @@
         document.querySelector('.hero-badge').textContent = t.heroBadge;
         document.querySelector('.section-themen .section-title').textContent = t.sectionThemen;
         document.querySelector('.facts-title').textContent = t.sectionFacts;
+
+        const regTitle = document.getElementById('registration-title');
+        if (regTitle) {
+            regTitle.textContent = t.sectionRegistration;
+        }
+        const regBtn = document.getElementById('register-btn');
+        if (regBtn) {
+            regBtn.textContent = t.registerBtn;
+        }
+
         document.getElementById('submit-btn').textContent = t.submitBtn;
         document.querySelector('.quote-label').textContent = t.quoteLabel;
 
@@ -365,6 +380,11 @@
             elements.introText.innerHTML = renderTokens(sections.intro);
         }
 
+        // Registration
+        if (elements.registrationContent && sections.registration && sections.registration.length > 0) {
+            elements.registrationContent.innerHTML = renderTokens(sections.registration);
+        }
+
         // Quote — render to HTML, then extract plain text
         if (sections.quote && sections.quote.length > 0) {
             const quoteHtml = renderTokens(sections.quote);
@@ -403,6 +423,10 @@
                 injectContent(contentCache[lang]);
                 hideLoading();
                 return;
+            }
+
+            if (typeof marked === 'undefined') {
+                throw new Error('Der Markdown-Parser (assets/js/marked.umd.js) konnte nicht geladen werden.');
             }
 
             const response = await fetch(CONFIG.markdownPaths[lang]);

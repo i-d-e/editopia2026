@@ -12,6 +12,7 @@ unter **<https://editopia2026.i-d-e.de>**.
 | Was du ändern willst | Datei | Wirkt auf |
 |---|---|---|
 | **Programm / Zeitplan** | [`data/schedule.csv`](data/schedule.csv) | `/programm.html` |
+| **Anmeldetext** (Rahmenprogramm, Fristen) | Abschnitt `## registration` in [`data/call-for-papers-de.md`](data/call-for-papers-de.md) / [`-en.md`](data/call-for-papers-en.md) **und** von Hand in [`en.html`](en.html) | `/` und `/en.html` |
 | Startseiten-Text **deutsch** (Intro, Themenfelder, Einreichung, Fristen) | [`data/call-for-papers-de.md`](data/call-for-papers-de.md) | `/` (Ansicht DE) |
 | Startseiten-Text **englisch** | [`data/call-for-papers-en.md`](data/call-for-papers-en.md) | `/` (Ansicht EN) |
 | Eigenständige **englische CfP-Seite** | [`en.html`](en.html) | `/en.html` (statisch, von Hand) |
@@ -74,13 +75,26 @@ Die Domain `editopia2026.i-d-e.de` ist über die Datei [`CNAME`](CNAME) gesetzt.
 index.html              Startseite (DE/EN-Umschalter, Text aus data/*.md)
 en.html                 Statische englische CfP-Seite
 programm.html           Programmseite (rendert data/schedule.csv)
+anreise.html            Anreise & Unterkunft (statisch, DE/EN-Blöcke)
 main.js                 Lädt/parst die CfP-Markdown für index.html
 schedule.js             Liest/parst schedule.csv und rendert das Programm
+anreise.js              Sprachumschalter/Modal für anreise.html
 styles.css              Gesamtes Design (monochrom, "Post-Digital Minimalism")
 data/
   schedule.csv          Programm-Daten (einzige Quelle)
   README.md             CSV-Vertrag & Aktualisierungsregeln
   call-for-papers-*.md  Startseiten-Text DE/EN
 assets/img/             Logos und Grafiken
+assets/js/marked.umd.js Markdown-Parser (fest eingebunden, siehe unten)
 sitemap.xml, robots.txt SEO
 ```
+
+## Markdown-Parser
+
+`index.html` rendert die Startseite aus Markdown und braucht dafür die Bibliothek
+**marked**. Sie liegt fest im Repo unter `assets/js/marked.umd.js` (v18.0.7, MIT) und
+wird **nicht** mehr von einem CDN geladen: Die früher genutzte Adresse
+`cdn.jsdelivr.net/npm/marked/marked.min.js` zeigte immer auf die neueste Version, und
+seit marked 16 (Juni 2025) gibt es die Datei `marked.min.js` dort nicht mehr — der
+Startseiteninhalt blieb dadurch leer. Beim Aktualisieren die Datei ersetzen und die
+Startseite einmal im Browser prüfen.
