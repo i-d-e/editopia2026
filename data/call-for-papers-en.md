@@ -16,9 +16,8 @@ On the occasion of its 20th anniversary, the Institute for Documentology and Sch
 
 **Registration for Editopia 2026 is open.** To register, simply send an e-mail to [editopia2026@i-d-e.de](mailto:editopia2026@i-d-e.de). No conference fee is charged; participation is limited to 60 people.
 
-Please state in your registration whether you would like to join the two accompanying events on Wednesday, 2 September 2026:
+Please state in your registration whether you would like to join the accompanying event on Wednesday, 2 September 2026:
 
-- **Social event, 17:00–18:00:** a 60-minute guided tour of the Engels House (in German and English).
 - **Informal dinner, from 19:00:** Restaurant Alaturka (participants pay their own bill).
 
 ## quote
