@@ -16,10 +16,10 @@ On the occasion of its 20th anniversary, the Institute for Documentology and Sch
 
 **Registration for Editopia 2026 is open.** To register, simply send an e-mail to [editopia2026@i-d-e.de](mailto:editopia2026@i-d-e.de). No conference fee is charged; participation is limited to 60 people.
 
-Please state in your registration whether you would like to join the accompanying events:
+Please state in your registration whether you would like to join the accompanying events on Wednesday, 2 September 2026:
 
-- **Guided city tour of Wuppertal:** guided walk organised with the Wuppertal city marketing; date and meeting point will be announced.
-- **Informal dinner, Wednesday, 2 September 2026, from 19:00:** Restaurant Alaturka (participants pay their own bill).
+- **Guided city tour, 17:30–18:30:** guided walk through Wuppertal organised with the Wuppertal city marketing; the meeting point will be announced.
+- **Informal dinner, from 19:00:** Restaurant Alaturka (participants pay their own bill).
 
 ## quote
 

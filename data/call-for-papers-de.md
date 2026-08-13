@@ -16,10 +16,10 @@ Das Institut für Dokumentologie und Editorik (IDE) lädt anlässlich seines 20j
 
 **Die Anmeldung zur Editopia 2026 ist offen.** Melden Sie sich formlos per E-Mail an [editopia2026@i-d-e.de](mailto:editopia2026@i-d-e.de) an. Eine Tagungsgebühr wird nicht erhoben, die Teilnahmezahl ist auf 60 Personen begrenzt.
 
-Bitte geben Sie in Ihrer Anmeldung an, ob Sie an den Rahmenveranstaltungen teilnehmen möchten:
+Bitte geben Sie in Ihrer Anmeldung an, ob Sie an den Rahmenveranstaltungen am Mittwoch, dem 2\. September 2026, teilnehmen möchten:
 
-- **Stadtrundgang durch Wuppertal:** Geführter Rundgang mit dem Stadtmarketing Wuppertal; Termin und Treffpunkt werden noch bekanntgegeben.
-- **Informal Dinner, Mittwoch, 2\. September 2026, ab 19 Uhr:** Restaurant Alaturka (Selbstzahler).
+- **Stadtrundgang, 17:30–18:30 Uhr:** Geführter Rundgang durch Wuppertal mit dem Stadtmarketing Wuppertal; der Treffpunkt wird noch bekanntgegeben.
+- **Informal Dinner, ab 19 Uhr:** Restaurant Alaturka (Selbstzahler).
 
 ## quote
 
