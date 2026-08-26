@@ -1728,10 +1728,11 @@ strong {
 .sched-band--plenary .sched-band-mod { color: #AAAAAA; }   /* 7.6:1 on black */
 .sched-band--break .sched-band-mod { color: var(--content-grey); }
 .sched-section-mod {
-    margin: 0 0 0 auto;
-    font-family: var(--font-mono); font-size: 0.75rem; color: var(--content-grey);
+    margin: 0 0 0 auto; text-align: right;   /* keeps wrapped names in the right rail */
+    font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-black);
 }
-.sched-mod-label { color: var(--dim-grey); }
+.sched-mod-label { color: var(--content-grey); }              /* 7.0:1 on white, carries the role */
+.sched-band--plenary .sched-mod-label { color: var(--dim-grey); }  /* keeps the label light on the inverted band */
 
 /* ---- Unknown fallback (degraded, never dropped) ---- */
 .sched-row--unknown { padding: var(--space-md) var(--space-lg); color: var(--content-grey); font-family: var(--font-mono); font-size: 0.8125rem; border-bottom: var(--border-thin); }
@@ -1755,6 +1756,7 @@ strong {
     .sched-band-meta { text-align: left; }
     .sched-section { flex-wrap: wrap; gap: var(--space-sm); }
     .sched-section-time { min-width: 0; }
+    .sched-section-mod { margin-left: 0; text-align: left; }  /* stacked bar reads left, as .sched-band-meta */
 }
 @media (max-width: 480px) {
     .sched-day { padding: var(--space-sm) var(--space-md); font-size: 0.75rem; letter-spacing: 0.15em; }
@@ -1772,5 +1774,6 @@ strong {
     .sched-day, .sched-section-badge { break-after: avoid; }
     .sched-band--plenary { background-color: white !important; color: black !important; border: 2px solid black; }
     .sched-band--plenary .sched-band-heading, .sched-band--plenary .sched-band-meta { color: black !important; }
+    .sched-band--plenary .sched-band-mod, .sched-band--plenary .sched-mod-label { color: black !important; }
     .sched-band--break { background-color: white !important; }
 }
