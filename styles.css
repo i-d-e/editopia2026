@@ -1697,7 +1697,7 @@ strong {
 .sched-row:hover .sched-dl { background-color: var(--off-white); }
 .sched-time { font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 500; color: var(--ink-black); }
 .sched-no { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--content-grey); text-align: center; }
-.sched-speaker { font-family: var(--font-primary); font-weight: 600; font-size: 0.9375rem; line-height: 1.35; }
+.sched-speaker { font-family: var(--font-primary); font-weight: 600; font-size: 0.9375rem; line-height: 1.35; white-space: pre-line; } /* CSV cell line breaks (quoted newlines) render as breaks */
 .sched-title  { font-family: var(--font-primary); font-weight: 500; font-size: 0.9375rem; line-height: 1.4; }
 .sched-dur    { font-family: var(--font-mono); font-size: 0.75rem; color: var(--content-grey); text-align: right; white-space: nowrap; }
 
