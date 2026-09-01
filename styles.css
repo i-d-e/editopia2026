@@ -1734,6 +1734,17 @@ strong {
 .sched-mod-label { color: var(--content-grey); }              /* 7.0:1 on white, carries the role */
 .sched-band--plenary .sched-mod-label { color: var(--dim-grey); }  /* keeps the label light on the inverted band */
 
+/* ---- Sponsor credit (tiny, inline after the band label) ---- */
+.sched-presenter {
+    display: inline-flex; align-items: center; gap: 0.3em;
+    margin-left: 0.75em; vertical-align: baseline;
+    font-family: var(--font-mono); font-weight: 400;
+    font-size: 0.5rem; letter-spacing: 0.02em;
+    color: inherit; text-decoration: none; opacity: 0.55;
+}
+.sched-presenter:hover, .sched-presenter:focus-visible { opacity: 1; text-decoration: underline; }
+.sched-presenter-logo { height: 0.625rem; width: auto; }
+
 /* ---- Unknown fallback (degraded, never dropped) ---- */
 .sched-row--unknown { padding: var(--space-md) var(--space-lg); color: var(--content-grey); font-family: var(--font-mono); font-size: 0.8125rem; border-bottom: var(--border-thin); }
 

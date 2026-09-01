@@ -18,7 +18,12 @@
             'Januar': 1, 'Februar': 2, 'März': 3, 'April': 4, 'Mai': 5, 'Juni': 6,
             'Juli': 7, 'August': 8, 'September': 9, 'Oktober': 10, 'November': 11, 'Dezember': 12
         },
-        breakLabels: ['Coffee Break', 'Lunch', 'Pause', 'Break', 'Kaffeepause'] // ci substring
+        breakLabels: ['Coffee Break', 'Lunch', 'Pause', 'Break', 'Kaffeepause'], // ci substring
+        // Sponsor credit per band, matched by label substring. Lives here (not in the CSV)
+        // so the sheet re-export stays untouched.
+        presenters: [
+            { match: 'Guided City Tour', name: 'DHCraft', url: 'https://dhcraft.org/', logo: 'assets/img/dhcraft-logo.png' }
+        ]
     };
 
     // ─── Quote-aware CSV tokenizer (RFC-4180-ish, never throws) ───────
@@ -348,6 +353,8 @@
             isPlen ? 'Plenum: ' : 'Pause: ', isPlen ? 'Plenary: ' : 'Break: '));
         h3.appendChild(document.createTextNode(item.label));
         if (item.flag) h3.dataset.flag = item.flag;
+        const pres = CONFIG.presenters.find(p => item.label.includes(p.match));
+        if (pres) h3.appendChild(renderPresenter(pres));
         div.appendChild(h3);
 
         const meta = el('p', 'sched-band-meta');
@@ -356,6 +363,24 @@
         div.appendChild(meta);
         if (item.moderation) div.appendChild(renderModeration(item.moderation, 'sched-band-mod'));
         return div;
+    }
+
+    function renderPresenter(pres) {
+        const a = document.createElement('a');
+        a.href = pres.url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.className = 'sched-presenter';
+        a.setAttribute('aria-label', 'sponsored by ' + pres.name);
+        const img = document.createElement('img');
+        img.src = pres.logo;
+        img.alt = ''; // decorative, aria-label on the link carries the name
+        img.className = 'sched-presenter-logo';
+        img.loading = 'lazy';
+        a.appendChild(document.createTextNode('sponsored by '));
+        a.appendChild(img);
+        a.appendChild(document.createTextNode(pres.name));
+        return a;
     }
 
     function renderUnknown(item) {
