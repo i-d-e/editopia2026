@@ -51,6 +51,11 @@ Zeilentypen werden **strukturell** erkannt (nicht nach Inhalt):
 - **Vortrag ohne Vortragende und Titel** → wird als „Noch offen / To be announced"
   angezeigt.
 
+Zusätze wie ein Treffpunkt gehören einfach in die Bezeichnung der Zeile
+(z. B. `Social Event · Guided City Tour · Meeting Point: …`). Sponsor-Hinweise an
+Balken kommen dagegen **nicht** aus der CSV, sondern aus `presenters` in
+`schedule.js`.
+
 ## Format-Regeln (die fehleranfälligen Stellen)
 
 - **Uhrzeiten als Text `HH:MM`** (z. B. `13:00`). In Google Sheets die Zeitspalte
