@@ -18,7 +18,7 @@
             'Januar': 1, 'Februar': 2, 'März': 3, 'April': 4, 'Mai': 5, 'Juni': 6,
             'Juli': 7, 'August': 8, 'September': 9, 'Oktober': 10, 'November': 11, 'Dezember': 12
         },
-        breakLabels: ['Coffee Break', 'Lunch', 'Pause', 'Break', 'Kaffeepause'], // ci substring
+        breakLabels: ['Coffee Break', 'Lunch', 'Pause', 'Break', 'Kaffeepause', 'Arrival', 'Ankommen'], // ci substring
         // Sponsor credit per band, matched by label substring. Lives here (not in the CSV)
         // so the sheet re-export stays untouched.
         presenters: [
