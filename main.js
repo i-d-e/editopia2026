@@ -32,7 +32,6 @@
         errorTitle: document.getElementById('error-title'),
         nav: document.getElementById('nav'),
         introText: document.getElementById('intro-text'),
-        registrationContent: document.getElementById('registration-content'),
         quoteText: document.getElementById('quote-text'),
         themenContent: document.getElementById('themen-content'),
         factsContent: document.getElementById('facts-content'),
@@ -150,10 +149,7 @@
         de: {
             heroTitle: 'Zur Zukunft von Dokumentologie und Editorik im Postdigitalen',
             heroMeta: 'KONFERENZ DES',
-            heroBadge: 'ANMELDUNG OFFEN',
             sectionThemen: 'Themenfelder',
-            sectionRegistration: 'Anmeldung',
-            registerBtn: 'Jetzt anmelden',
             sectionFacts: 'Einreichung',
             quoteLabel: '[ FRAGESTELLUNG ]',
             heroOrgLabel: 'Lokale Organisation',
@@ -169,10 +165,7 @@
         en: {
             heroTitle: 'On the Future of Documentology and Scholarly Editing in the Post-Digital Age',
             heroMeta: 'CONFERENCE OF THE',
-            heroBadge: 'REGISTRATION OPEN',
             sectionThemen: 'Topics',
-            sectionRegistration: 'Registration',
-            registerBtn: 'Register now',
             sectionFacts: 'Submission',
             quoteLabel: '[ KEY QUESTION ]',
             heroOrgLabel: 'Local Organization',
@@ -221,18 +214,8 @@
         const t = UI_TRANSLATIONS[lang];
         document.getElementById('hero-title-sub').textContent = t.heroTitle;
         document.querySelector('.hero-meta-ide span').textContent = t.heroMeta;
-        document.querySelector('.hero-badge').textContent = t.heroBadge;
         document.querySelector('.section-themen .section-title').textContent = t.sectionThemen;
         document.querySelector('.facts-title').textContent = t.sectionFacts;
-
-        const regTitle = document.getElementById('registration-title');
-        if (regTitle) {
-            regTitle.textContent = t.sectionRegistration;
-        }
-        const regBtn = document.getElementById('register-btn');
-        if (regBtn) {
-            regBtn.textContent = t.registerBtn;
-        }
 
         document.querySelector('.quote-label').textContent = t.quoteLabel;
 
@@ -375,11 +358,6 @@
         // Intro
         if (sections.intro && sections.intro.length > 0) {
             elements.introText.innerHTML = renderTokens(sections.intro);
-        }
-
-        // Registration
-        if (elements.registrationContent && sections.registration && sections.registration.length > 0) {
-            elements.registrationContent.innerHTML = renderTokens(sections.registration);
         }
 
         // Quote — render to HTML, then extract plain text

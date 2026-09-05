@@ -12,15 +12,6 @@ Eine Grundbeobachtung steht hinter allen anderen Fragen: Daten bilden den Inhalt
 
 Das Institut für Dokumentologie und Editorik (IDE) lädt anlässlich seines 20jährigen Bestehens dazu ein, diesen Fragen auf der internationalen Konferenz **Editopia** gemeinsam nachzugehen. Unter Postdigital verstehen wir dabei eine Welt, in der digitale Werkzeuge und Denkweisen nicht mehr primär als Gegensatz zum Analogen begriffen werden, sondern als Fundament geisteswissenschaftlicher Arbeit und damit als Grundlage für darüber hinausgehende Fragestellungen.
 
-## registration
-
-**Die Anmeldung zur Editopia 2026 ist offen.** Melden Sie sich formlos per E-Mail an [editopia2026@i-d-e.de](mailto:editopia2026@i-d-e.de) an. Eine Tagungsgebühr wird nicht erhoben, die Teilnahmezahl ist auf 60 Personen begrenzt.
-
-Bitte geben Sie in Ihrer Anmeldung an, ob Sie an den Rahmenveranstaltungen am Mittwoch, dem 2\. September 2026, teilnehmen möchten:
-
-- **Stadtrundgang, 17:30–18:30 Uhr:** Geführter Rundgang durch Wuppertal mit dem Stadtmarketing Wuppertal; der Treffpunkt wird noch bekanntgegeben.
-- **Informal Dinner, ab 19 Uhr:** Restaurant Alaturka (Selbstzahler).
-
 ## quote
 
 Daten bilden den Inhalt und Kern der Edition und die Daten selbst sind vor allem fluide, prozessual und vernetzt. Hat dann aber die Edition als Form noch Bestand oder löst sie sich auf? Und wie müssen wir die Modelle und Prozesse, die zu den Daten führen, ggf. neu denken?

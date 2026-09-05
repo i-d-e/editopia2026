@@ -1,8 +1,8 @@
 /**
  * Editopia 2026 - Programme / Schedule
- * Renders the conference programme from a single CSV (data/schedule.csv).
- * The CSV is the only source of truth: edit the Google Sheet, export as CSV,
- * replace data/schedule.csv — no code change needed.
+ * Renders the conference programme from the ROWS table below. The conference
+ * has taken place, so the programme is final and lives in this file; there is
+ * no longer an external data source.
  *
  * Classification is schema-driven (time-shape of col1 + emptiness of cols 2-5
  * + the "Sektion"/"Call-Feld" markers), never keyed on talk content or row index.
@@ -12,43 +12,70 @@
 
     // ─── Configuration ───────────────────────────────────────────────
     const CONFIG = {
-        csvPath: 'data/schedule.csv',
         weekdays: ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'],
         months: {
             'Januar': 1, 'Februar': 2, 'März': 3, 'April': 4, 'Mai': 5, 'Juni': 6,
             'Juli': 7, 'August': 8, 'September': 9, 'Oktober': 10, 'November': 11, 'Dezember': 12
         },
         breakLabels: ['Coffee Break', 'Lunch', 'Pause', 'Break', 'Kaffeepause'], // ci substring
-        // Sponsor credit per band, matched by label substring. Lives here (not in the CSV)
-        // so the sheet re-export stays untouched.
+        // Sponsor credit per band, matched by label substring.
         presenters: [
             { match: 'Guided City Tour', name: 'DHCraft', url: 'https://dhcraft.org/', logo: 'assets/img/dhcraft-logo.png' }
         ]
     };
 
-    // ─── Quote-aware CSV tokenizer (RFC-4180-ish, never throws) ───────
-    // Handles quoted commas, doubled-quote "" -> ", CRLF / bare LF / lone CR,
-    // UTF-8 BOM, quoted embedded newlines. Cells returned verbatim (trim later).
-    function parseCsv(text) {
-        if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
-        const rows = [];
-        let row = [], field = '', inQuotes = false;
-        for (let i = 0; i < text.length; i++) {
-            const c = text[i];
-            if (inQuotes) {
-                if (c === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else inQuotes = false; }
-                else field += c;
-                continue;
-            }
-            if (c === '"') inQuotes = true;
-            else if (c === ',') { row.push(field); field = ''; }
-            else if (c === '\r') { if (text[i + 1] !== '\n') { row.push(field); field = ''; rows.push(row); row = []; } }
-            else if (c === '\n') { row.push(field); field = ''; rows.push(row); row = []; }
-            else field += c;
-        }
-        if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
-        return rows;
-    }
+    // ─── Programme data ───────────────────────────────────────────────
+    // Frozen after the conference. Columns mirror the former sheet export:
+    // [time, label or talk order, speaker, title, duration or call-field note, chair].
+    // A row is typed by the shape of its columns (see buildModel), never by its position.
+    const ROWS = [
+        ["Mittwoch · 02. September 2026"],
+        ["12:00–13:00", "Arrival · Welcome & Opening Remarks · Start 12:30"],
+        ["13:00–14:30", "Sektion 1", "", "", "Call-Feld 3", "Patrick Sahle"],
+        ["13:00", "1", "Bastian Politycki", "Editionsagenten: Wie gestalten große Sprachmodelle digitale Editionen?", "30 min"],
+        ["13:30", "2", "Christopher Pollin, Elias Keyenbühl", "Agentenbasierte Editionsworkflows und epistemische Infrastrukturen. Ein Experiment zur digitalen Edition der Schriften von Jeanne Hersch", "30 min"],
+        ["14:00", "3", "Tim Westphal", "Posttextuelle Schnittstellen? KI-Agenten als dialogische Zugänge zu digitalen Editionen", "30 min"],
+        ["14:30–15:00", "Coffee Break", "", "", "30 min"],
+        ["15:00–16:00", "Sektion 2", "", "", "Call-Feld 9", "Christopher Pollin"],
+        ["15:00", "1", "Gerrit Brüning", "Postdigitale Editionen und postanaloges Edieren", "30 min"],
+        ["15:30", "2", "Alice Gydé, Elena Pierazzo, Serena Crespi, Victoire Muller", "The workflow of digital critical editions", "30 min"],
+        ["17:30–18:30", "Social Event · Guided City Tour Wuppertal · Meeting Point: Bus Stop Friedhofskirche", "", "", "60 min"],
+        ["ab 19:00", "Informal Dinner & Networking · Restaurant Alaturka"],
+
+        ["Donnerstag · 03. September 2026"],
+        ["9:00–10:30", "Sektion 3", "", "", "Call-Feld 2", "Torsten Roeder"],
+        ["9:00", "1", "Johannes Kepper", "Who's got the makings? Fluide Transkriptionen als (musik)philologische Herausforderung", "30 min"],
+        ["9:30", "2", "Christian Lück", "Fluidität und Stabilität im Alignment-Graph", "30 min"],
+        ["10:00", "3", "Inmaculada Ureña", "Textual fluidity and data modelling in a multilingual digital scholarly edition of Utopia", "30 min"],
+        ["10:30–11:00", "Coffee Break", "", "", "30 min"],
+        ["11:00–12:30", "Sektion 4", "", "", "Call-Felder 4 + 8", "Erik Renz"],
+        ["11:00", "1", "Patrizia Zihlmann", "Mehr als Usability und Interface: Human Centered Design als Leitprinzip. Überlegungen zur Zukunft digitaler Editionen", "30 min"],
+        ["11:30", "2", "Elias Zimmermann, Levyn Bürki", "Diskriminierung (nicht) edieren. Diskriminierungssensible Editions-Richtlinien am Beispiel der digitalen Edition Annemarie Schwarzenbach", "30 min"],
+        ["12:00", "3", "Johannes Ioannu, Ruth Sander, Fernanda Wolff", "Kratzen an der Oberfläche. Barrierefreiheit als Strategie eines nachhaltigen Zugangs für Mensch und Maschine", "30 min"],
+        ["12:30–14:00", "Lunch", "", "", "90 min"],
+        ["14:00–15:30", "Sektion 5", "", "", "Call-Feld 5", "Fernanda Wolff"],
+        ["14:00", "1", "Andreas Kuczera", "Von der digitalen zur algorithmischen Edition: Applied Text as Graph (ATAG) als Modell postdigitaler Textmodellierung", "30 min"],
+        ["14:30", "2", "Daniel Stökl, Benjamin Schnabel, Anamarija Vargovic, Hayim Lapin", "MaTraDSE: Manuscript Transmogrification for Digital Scholarly Editions", "30 min"],
+        ["15:00", "3", "Laura Rehberger", "Der multimediale Werkkomplex The Girl and Her Trust als postdigitales Editionsprojekt", "30 min"],
+        ["15:30–16:00", "Coffee Break", "", "", "30 min"],
+        ["16:00–17:30", "Sektion 6", "", "", "Call-Feld 1", "Ulrike Henny-Krahmer"],
+        ["16:00", "1", "Giuseppe Arena", "Processuality, Instability, and the Ecdotic Challenge of Born-Digital Electronic Poetry", "30 min"],
+        ["16:30", "2", "Elena Barchielli, Simon Willemin, Elena Spadini", "Description, edition and analysis of born-digital literary sources: case studies from the Bit Philology project", "30 min"],
+        ["17:00", "3", "Emmanuela Carbé", "From Text to Event: Rethinking Scholarly Editing in Hybrid and Contemporary Archives", "30 min"],
+        ["17:30–18:30", "Special Format: Fishbowl discussion with introduction", "", "", "60 min", "Georg Vogeler"],
+        ["17:30", "", "Performance: Joris J. van Zundert, Aengus Ward, Andreas Kuczera, Sebastian Enns, Elisa Cugliana, Tara L. Andrews\nResponse: Patrick Sahle", "Editopia 2049"],
+        ["ab 19:00", "Informal Reception"],
+
+        ["Freitag · 04. September 2026"],
+        ["9:00–10:00", "Sektion 7", "", "", "Call-Feld 6", "Elisa Cugliana"],
+        ["9:00", "1", "Stefan Dumont, Tobias Kraft, Gerald Neumann, Markus Schnöpf, Christian Thomas", "Testament, Patientenverfügung, Nachlassverwaltung. Eine Bucket List zum Abschluss Digitaler Editionen am Beispiel der Berliner edition humboldt", "30 min"],
+        ["09:30", "2", "Elli Bleeker, Peter Boot, Fenia Menexi", "The Modular Edition: Tracing Editorial Concepts Across Digital Edition Projects", "30 min"],
+        ["10:00–10:30", "Coffee Break", "", "", "30 min"],
+        ["10:30–11:30", "Sektion 8", "", "", "Call-Feld 7", "Torsten Schaßan"],
+        ["10:30", "1", "Martina Scholger, Ulrike Henny-Krahmer, Torsten Roeder, Elisa Beshero-Bondar, Syd Bauman, Helena Bermúdez Sabel, Elli Bleeker, Martin Holmes, Patricia O'Connor, Joey Takeda, Raffaele Viglianti", "Towards a TEI Editopia: Visions for a Post-Digital P6 Architecture", "30 min"],
+        ["11:00", "2", "Roberto Rosselli Del Turco, Chiara Martignano", "The Interface as an Epistemic Requirement: Addressing Information Overcrowding and Accessibility in EVT 3", "30 min"],
+        ["11:30–12:30", "Closing Discussion & Farewell", "", "", "60 min", "Fernanda Wolff, Erik Renz"],
+    ];
 
     // ─── Helpers + time detection ─────────────────────────────────────
     const cell = (r, i) => (r[i] || '');
@@ -76,28 +103,10 @@
         return m[3] + '-' + String(mo).padStart(2, '0') + '-' + String(+m[1]).padStart(2, '0');
     }
 
-    // ─── Data-quality flags (surfaced to maintainer, never mutate content) ──
-    const FLAG_RULES = [
-        { reason: 'editorial-note', test: v => /\([A-ZÄÖÜ]{1,3}:\s/.test(v) },
-        { reason: 'placeholder', test: v => /\bSchwebse\b/i.test(v) },
-        { reason: 'tbd', test: v => /\b(TBD|TBA|t\.b\.a\.)\b/i.test(v) }
-    ];
-    function flagValue(model, line, value, day, field) {
-        let first = null;
-        for (const r of FLAG_RULES) {
-            if (r.test(value)) {
-                if (!first) first = r.reason;
-                model.meta.flags.push({ line, field, reason: r.reason, value, day });
-                console.warn('[schedule] ' + r.reason + ' at line ' + line + ' (' + field + '): "' + value + '"');
-            }
-        }
-        return first;
-    }
-
-    // ─── Build model from parsed rows ─────────────────────────────────
+    // ─── Build model from the ROWS table ──────────────────────────────
     function buildModel(rows) {
         const model = {
-            meta: { rowCount: rows.length, parsedAt: new Date().toISOString(), counts: {}, flags: [] },
+            meta: { rowCount: rows.length, counts: {} },
             days: []
         };
         let day = null, seenFirstDay = false, dayOrd = 0;
@@ -151,7 +160,6 @@
                 const item = isBreak
                     ? { kind: 'break', range: hhmm(c0), label: c1, duration: c4, moderation: c5, id: day.id + '-brk-' + slug + '-' + day.items.length }
                     : { kind: 'plenary', range: hhmm(c0), label: c1, duration: c4, moderation: c5, accent: true, open: tk === 'open', id: day.id + '-plen-' + slug + '-' + day.items.length };
-                item.flag = flagValue(model, ln, c1, day.label, 'label');
                 day.items.push(item);
                 bump(isBreak ? 'break' : 'plenary');
                 continue;
@@ -165,9 +173,7 @@
                     day.items.push({ kind: 'tba', time: t, isoTime: iso, order: c1, duration: c4 });
                     bump('tba');
                 } else {
-                    const item = { kind: 'talk', time: t, isoTime: iso, order: c1, speaker: c2, title: c3, duration: c4 };
-                    item.flag = flagValue(model, ln, c2, day.label, 'speaker');
-                    day.items.push(item);
+                    day.items.push({ kind: 'talk', time: t, isoTime: iso, order: c1, speaker: c2, title: c3, duration: c4 });
                     bump('talk');
                 }
                 continue;
@@ -184,9 +190,9 @@
         return model;
     }
 
-    // ─── Node export guard (lets the pure parser be unit-tested) ──────
+    // ─── Node export guard (lets the pure classifier be unit-tested) ──
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports = { parseCsv, timeKind, parseGermanDate, buildModel, CONFIG };
+        module.exports = { ROWS, timeKind, parseGermanDate, buildModel, CONFIG };
         return;
     }
 
@@ -195,27 +201,6 @@
     // ════════════════════════════════════════════════════════════════
 
     let currentLang = 'de';
-
-    const ERR = {
-        de: {
-            http: 'Programm konnte nicht geladen werden (HTTP %s).',
-            empty: 'Die Programmdatei ist leer.',
-            noDays: 'Im Programm wurden keine Konferenztage gefunden. Bitte CSV-Struktur prüfen.',
-            generic: 'Das Programm konnte nicht geladen werden.'
-        },
-        en: {
-            http: 'The programme could not be loaded (HTTP %s).',
-            empty: 'The programme file is empty.',
-            noDays: 'No conference days found in the programme. Please check the CSV structure.',
-            generic: 'The programme could not be loaded.'
-        }
-    };
-    const fmt = (s, v) => s.replace('%s', v);
-
-    const SCHEDULE_MSG = {
-        de: { unknown: n => n + ' Zeile(n) konnten nicht zugeordnet werden – bitte CSV-Format prüfen.' },
-        en: { unknown: n => n + ' row(s) could not be classified – please check the CSV format.' }
-    };
 
     // Footer credit line carries embedded links → localized via innerHTML (parity with main.js)
     const LOCAL_ORG_HTML = {
@@ -325,9 +310,7 @@
             dl.appendChild(chrome('dd', 'sched-tba', 'Noch offen', 'To be announced'));
         } else {
             dl.appendChild(chrome('dt', 'visually-hidden', 'Vortragende', 'Speakers'));
-            const ddSpk = el('dd', 'sched-speaker', item.speaker);
-            if (item.flag) ddSpk.dataset.flag = item.flag;
-            dl.appendChild(ddSpk);
+            dl.appendChild(el('dd', 'sched-speaker', item.speaker));
 
             dl.appendChild(chrome('dt', 'visually-hidden', 'Titel', 'Title'));
             dl.appendChild(el('dd', 'sched-title', item.title));
@@ -352,7 +335,6 @@
         h3.appendChild(chrome('span', 'sched-band-kind visually-hidden',
             isPlen ? 'Plenum: ' : 'Pause: ', isPlen ? 'Plenary: ' : 'Break: '));
         h3.appendChild(document.createTextNode(item.label));
-        if (item.flag) h3.dataset.flag = item.flag;
         const pres = CONFIG.presenters.find(p => item.label.includes(p.match));
         if (pres) h3.appendChild(renderPresenter(pres));
         div.appendChild(h3);
@@ -392,23 +374,8 @@
         mount.textContent = '';
         const frag = document.createDocumentFragment();
 
-        // On-page maintainer hint for partial corruption (re-export gone wrong) — console.warn alone is invisible to organisers
-        const unknown = model.meta.counts.unknown;
-        if (unknown) {
-            const warn = el('p', 'schedule-warning', SCHEDULE_MSG[currentLang].unknown(unknown));
-            warn.setAttribute('role', 'status');
-            frag.appendChild(warn);
-            console.warn('[schedule] ' + unknown + ' unclassified row(s) rendered as raw.');
-        }
-
         model.days.forEach(d => frag.appendChild(renderDay(d)));
         mount.appendChild(frag);
-
-        if (model.meta.flags.length) {
-            console.warn('[schedule] ' + model.meta.flags.length +
-                ' data-quality flag(s) — review before publishing:', model.meta.flags);
-        }
-        console.info('[schedule] counts', model.meta.counts);
     }
 
     // ─── i18n (single pass over [data-de][data-en]) ───────────────────
@@ -433,27 +400,6 @@
 
         const org = document.getElementById('footer-local-org');
         if (org) org.innerHTML = LOCAL_ORG_HTML[lang];
-    }
-
-    // ─── Loading / error (mirrors main.js) ────────────────────────────
-    function hideLoading() {
-        const loading = document.getElementById('loading');
-        if (!loading) return;
-        loading.classList.add('hidden');
-        setTimeout(() => { loading.style.display = 'none'; }, 300);
-    }
-    function showError(message) {
-        const sched = document.getElementById('schedule');
-        if (sched) sched.textContent = ''; // clear the stale "loading…" placeholder behind the modal
-        const modal = document.getElementById('error-modal');
-        const msg = document.getElementById('error-message');
-        if (msg) msg.textContent = message;
-        if (modal) {
-            modal.hidden = false;
-            const retry = document.getElementById('retry-btn');
-            if (retry) retry.focus();
-        }
-        hideLoading();
     }
 
     // ─── Impressum modal (copied from main.js) ────────────────────────
@@ -501,39 +447,14 @@
         return 'de';
     }
 
-    // ─── Content loading ──────────────────────────────────────────────
-    async function loadSchedule() {
-        try {
-            const res = await fetch(CONFIG.csvPath, { cache: 'no-cache' });
-            if (!res.ok) throw new Error(fmt(ERR[currentLang].http, res.status));
-            const text = await res.text();
-            if (!text || !text.trim()) throw new Error(ERR[currentLang].empty);
-
-            const model = buildModel(parseCsv(text));
-            if (!model.days.length || !model.days.some(d => d.items.length)) {
-                throw new Error(ERR[currentLang].noDays);
-            }
-            renderModel(model);
-            applyLang(currentLang);
-            hideLoading();
-        } catch (err) {
-            console.error('[schedule] load error:', err);
-            showError(err.message || ERR[currentLang].generic);
-        }
-    }
-
     // ─── Init ─────────────────────────────────────────────────────────
     function init() {
         currentLang = initialLang();
         initNavigation();
         initLanguageSwitcher();
         initImpressum();
-        const retry = document.getElementById('retry-btn');
-        if (retry) retry.addEventListener('click', () => location.reload());
-        const errModal = document.getElementById('error-modal');
-        if (errModal) errModal.addEventListener('keydown', e => { if (e.key === 'Escape') location.reload(); });
-        applyLang(currentLang); // localize chrome before data arrives
-        loadSchedule();
+        renderModel(buildModel(ROWS));
+        applyLang(currentLang);
     }
 
     if (document.readyState === 'loading') {

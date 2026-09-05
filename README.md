@@ -9,8 +9,7 @@ unter **<https://editopia2026.i-d-e.de>**.
 
 | Was du ändern willst | Datei | Wirkt auf |
 |---|---|---|
-| **Programm / Zeitplan** (inkl. Moderationen) | [`data/schedule.csv`](data/schedule.csv), Anleitung und Spaltenschema in [`data/README.md`](data/README.md) | `/programm.html` |
-| **Anmeldetext** (Rahmenprogramm, Fristen) | Abschnitt `## registration` in [`data/call-for-papers-de.md`](data/call-for-papers-de.md) / [`-en.md`](data/call-for-papers-en.md) **und** von Hand in [`en.html`](en.html) | `/` und `/en.html` |
+| **Programm / Zeitplan** (inkl. Moderationen) | Tabelle `ROWS` in [`schedule.js`](schedule.js) | `/programm.html` |
 | Startseiten-Text **deutsch** (Intro, Themenfelder, Einreichung, Fristen) | [`data/call-for-papers-de.md`](data/call-for-papers-de.md) | `/` (Ansicht DE) |
 | Startseiten-Text **englisch** | [`data/call-for-papers-en.md`](data/call-for-papers-en.md) | `/` (Ansicht EN) |
 | Eigenständige **englische CfP-Seite** | [`en.html`](en.html) | `/en.html` (statisch, von Hand) |
@@ -20,17 +19,19 @@ unter **<https://editopia2026.i-d-e.de>**.
 Nach jeder Änderung: **committen und auf `main` pushen** — GitHub Pages veröffentlicht
 automatisch (ein bis zwei Minuten).
 
-Das Programm wird vollständig aus `data/schedule.csv` erzeugt, es muss kein Code
-angefasst werden. Der komplette Ablauf (Google Sheet → CSV-Export → ersetzen →
-push), das Spaltenschema und die Formatregeln stehen in
-**[`data/README.md`](data/README.md)** — dort auch der Hinweis, dass die rohe CSV
-öffentlich abrufbar ist.
+Die Konferenz hat stattgefunden. Das Programm ist abgeschlossen und steht als
+Tabelle `ROWS` am Kopf von [`schedule.js`](schedule.js); die frühere CSV und ihr
+Google-Sheet-Export sind entfallen. Eine Zeile hat die Spalten Zeit, Nummer oder
+Bezeichnung, Vortragende, Titel, Dauer und Moderation, und wird strukturell
+klassifiziert, also über die Zeitform der ersten Spalte und die Belegung der
+übrigen, nicht über ihre Position. Ergänzt du eine Zeile, prüfe den Smoke-Test
+aus [`CLAUDE.md`](CLAUDE.md).
 
 ## Lokal ansehen
 
-Die Seiten laden ihre Inhalte per `fetch` — das funktioniert **nur über HTTP**, nicht
-durch Doppelklick auf die Datei (`file://`). Einen kleinen Webserver im Projektordner
-starten:
+Die Startseite lädt ihren Text per `fetch` aus `data/call-for-papers-*.md` — das
+funktioniert **nur über HTTP**, nicht durch Doppelklick auf die Datei (`file://`).
+Einen kleinen Webserver im Projektordner starten:
 
 ```bash
 python -m http.server 5501
@@ -50,15 +51,13 @@ Die Domain `editopia2026.i-d-e.de` ist über die Datei [`CNAME`](CNAME) gesetzt.
 ```
 index.html              Startseite (DE/EN-Umschalter, Text aus data/*.md)
 en.html                 Statische englische CfP-Seite
-programm.html           Programmseite (rendert data/schedule.csv)
+programm.html           Programmseite
 anreise.html            Anreise & Unterkunft (statisch, DE/EN-Blöcke)
 main.js                 Lädt/parst die CfP-Markdown für index.html
-schedule.js             Liest/parst schedule.csv und rendert das Programm
+schedule.js             Programmdaten (ROWS) und Rendering der Programmseite
 anreise.js              Sprachumschalter/Modal für anreise.html
 styles.css              Gesamtes Design (monochrom, "Post-Digital Minimalism")
 data/
-  schedule.csv          Programm-Daten (einzige Quelle)
-  README.md             CSV-Vertrag & Aktualisierungsregeln
   call-for-papers-*.md  Startseiten-Text DE/EN
 assets/img/             Logos und Grafiken
 assets/js/marked.umd.js Markdown-Parser (fest eingebunden, kein CDN)

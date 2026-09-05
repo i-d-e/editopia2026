@@ -56,8 +56,6 @@
             <span class="nav-pipe">|</span>
             <a href="anreise.html" class="nav-link" data-href-de="anreise.html" data-href-en="anreise.html?lang=en" data-de="ANREISE" data-en="TRAVEL">ANREISE</a>
             <span class="nav-pipe">|</span>
-            <a href="index.html#anmeldung" class="nav-link" data-href-de="index.html#anmeldung" data-href-en="en.html#registration" data-de="ANMELDUNG" data-en="REGISTRATION">ANMELDUNG</a>
-            <span class="nav-pipe">|</span>
             <div class="lang-switch" id="lang-switch">
                 <button type="button" class="lang-btn active" data-lang="de" aria-label="Deutsch" aria-pressed="true">DE</button>
                 <span class="lang-pipe" aria-hidden="true">|</span>
@@ -81,9 +79,7 @@
         <!-- Schedule -->
         <section class="section programm-section">
             <div class="container container--schedule">
-                <div class="schedule" id="schedule" tabindex="-1" aria-labelledby="programm-title">
-                    <p class="schedule-loading" data-de="Programm wird geladen…" data-en="Loading programme…">Programm wird geladen…</p>
-                </div>
+                <div class="schedule" id="schedule" tabindex="-1" aria-labelledby="programm-title"></div>
             </div>
         </section>
     </main>
@@ -162,27 +158,10 @@
         </div>
     </div>
 
-    <!-- Error Modal -->
-    <div class="error-modal" id="error-modal" role="alertdialog" aria-modal="true" aria-labelledby="error-title" aria-describedby="error-message" hidden>
-        <div class="error-content">
-            <span class="error-icon" aria-hidden="true">!</span>
-            <h2 id="error-title" class="visually-hidden">Fehler</h2>
-            <p class="error-message" id="error-message">Programm konnte nicht geladen werden.</p>
-            <button type="button" class="btn btn-outline" id="retry-btn" data-de="Erneut versuchen" data-en="Try again">Erneut versuchen</button>
-        </div>
-    </div>
-
-    <!-- Loading Indicator -->
-    <div class="loading" id="loading" role="status" aria-live="polite" aria-label="Seite wird geladen">
-        <div class="loading-spinner" aria-hidden="true"></div>
-        <p class="loading-text" id="loading-text" data-de="Laden…" data-en="Loading…">Laden…</p>
-    </div>
-
     <!-- No-JS Fallback -->
     <noscript>
-        <style>.loading { display: none !important; }</style>
         <div class="noscript-notice">
-            <p>Dieses Programm benötigt JavaScript. Die Quelldaten liegen als CSV unter <a href="data/schedule.csv">data/schedule.csv</a>.</p>
+            <p>Diese Seite benötigt JavaScript, um das Programm anzuzeigen.</p>
             <p><a href="index.html">← Zur Startseite</a></p>
         </div>
     </noscript>
